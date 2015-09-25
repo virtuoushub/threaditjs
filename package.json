@@ -1,0 +1,26 @@
+{
+  "name": "threadit",
+  "version": "0.0.1",
+  "description": "A stub for a comment thread API",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "MIT",
+  "dependencies": {
+    "express": "^4.13.3",
+    "express-rate-limit": "^1.0.3",
+    "hashids": "^1.0.2",
+    "random-word": "^1.0.2",
+    "grunt": "^0.4.5",
+    "grunt-contrib-copy": "^0.8.0",
+    "grunt-contrib-less": "^1.0.1",
+    "grunt-contrib-watch": "^0.6.1",
+    "grunt-markdown": "^0.7.0",
+    "grunt-md2html": "^0.2.2",
+    "grunt-ssh": "^0.12.6",
+    "load-grunt-tasks": "^3.2.0",
+    "vhost": "^3.0.1"
+  }
+}
