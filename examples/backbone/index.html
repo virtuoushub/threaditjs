@@ -1,0 +1,45 @@
+<!doctype html>
+<link rel="stylesheet" href="http://local.threaditjs.com/shared.css"/>
+
+
+<script type="text/template" id="threadit">
+	Threadit!
+
+	<div class="main"></div>
+</script>
+
+<script type="text/template" id="thread_item">
+	<p><a href="/thread/<%= id %>">
+		<%= text %>
+	</a></p>
+	<p><%= comment_count %> comment(s)</p>
+</script>
+
+<script type="text/template" id="new_thread">
+	<form>
+		<textarea></textarea>
+		<input type="submit" value="Post!"/>
+	</form>
+</script>
+
+<script type="text/template" id="comment">
+	<p><%= text %></p>
+
+	<div class="reply"><a href="javascript:void(0)">Reply</a></div>
+
+	<div class="children"></div>
+
+</script>
+
+<script type="text/template" id="comment_reply">
+	<form>
+		<textarea></textarea>
+		<input type="submit" value="Reply!"/>
+	</form>
+</script>
+
+
+<script src="/jquery-2.1.4.js"></script>
+<script src="/underscore.js"></script>
+<script src="/backbone.js"></script>
+<script src="/app.js"></script>

@@ -9,7 +9,7 @@
   "author": "",
   "license": "MIT",
   "dependencies": {
-    "body-parser": "^1.14.0",
+    "body-parser": "^1.14.1",
     "express": "^4.13.3",
     "express-rate-limit": "^1.0.3",
     "grunt": "^0.4.5",
