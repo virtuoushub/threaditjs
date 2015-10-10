@@ -1,4 +1,5 @@
 <!doctype html>
+<link rel="stylesheet" href="http://local.threaditjs.com/reset.css"/>
 <link rel="stylesheet" href="http://local.threaditjs.com/shared.css"/>
 
 
@@ -9,10 +10,11 @@
 </script>
 
 <script type="text/template" id="thread_item">
-	<p><a href="/thread/<%= id %>">
+	<p class="thread_title"><a href="/thread/<%= id %>">
 		<%= text %>
 	</a></p>
-	<p><%= comment_count %> comment(s)</p>
+	<p class="comment_count"><%= comment_count %> comment(s)</p>
+	<hr/>
 </script>
 
 <script type="text/template" id="new_thread">

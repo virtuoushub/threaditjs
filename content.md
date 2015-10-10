@@ -1,10 +1,8 @@
-## ThreaditJS
-
 ### A more comprehensive example application for SPA libraries/frameworks.  
 
 This page collects implementations of a thread-based discussion application all interacting with the same API.  The intent is to provide side-by-side comparisons for tasks every ES2015 client application will necessarily complete.  
 
-The main application shows a list of threads similar to a well known Internet discussion forum.  The user can create a new thread, display a thread's comments, and respond to a specific comment.  [This is a baseline implementation](http://backbone.threaditjs.com)
+The main application shows a list of threads similar to a well known Internet discussion forum.  The user can create a new thread, display a thread's comments, and respond to a specific comment.  [This is a baseline implementation](http://backbone.threaditjs.com).
 
 ## Goals
 
@@ -22,7 +20,7 @@ The goal is to have an application with roughly similar simplicity while providi
 
 ## The ThreaditJS API
 
-All implementations will use the same API, located at api.threaditjs.com.  Arguably someone could even come up with a native mobile consumer implementation.  
+All implementations will use the same API, located at http://api.threaditjs.com.  Arguably someone could even come up with a native mobile consumer implementation.  
 
 ## Examples
 
@@ -34,8 +32,8 @@ Currently, I only have:
 
 ## Contributing
 
-See the Github page!
+See the [Github page](http://github.com/koglerjs/threaditjs)!
 
 ---
 
-A longer look at the motivations for this project can be found [here](https://koglerjs.com/).  
+A longer look at the motivations for this project can be found [here](https://koglerjs.com/verbiage/threadit).  

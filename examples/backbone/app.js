@@ -77,6 +77,7 @@
 		commentSuccess : function(data) {
 			var parent = data.data.parent_id;
 			var newM = this.add(data.data);
+
 			this.get(parent).addChild(
 				newM
 			);
@@ -100,7 +101,7 @@
 			this.trigger("homeLoaded");
 		},
 		notifyError : function(data) {
-			if(data.cond==404) {
+			if(data.status==404) {
 				this.trigger("notFound");
 				return;
 			}
@@ -116,8 +117,6 @@
 	});
 
 	var store;
-	window.store = store;
-
 
 	var ThreaditV = Backbone.View.extend({
 		tpl : _.template($("#threadit").html()),
@@ -139,7 +138,7 @@
 		},
 		showThread : function() {			
 			this.$el.find(".main").html(this.comments.el);
-			this.comments.render();
+			this.comments.delegateEvents();
 		},
 		navigate : function(ev) {
 			var href = $(ev.currentTarget).attr('href');
@@ -180,6 +179,7 @@
 	});
 
 	var ThreadListV = Backbone.View.extend({
+		className:"thread_list",
 		tpl : _.template($("#thread_item").html()),
 		newThreadTpl : _.template($("#new_thread").html()),
 		events : {
@@ -189,6 +189,12 @@
 			store.bind("homeLoading", this.showLoading, this);
 			store.bind("homeLoaded", this.render, this);
 			store.bind("error", this.showError, this);
+		},
+		format : function(obj) {
+			if(obj.text.length>120) {
+				obj.text = obj.text.substr(0, 120) + "...";
+			}
+			return obj;
 		},
 		showLoading : function() {
 			this.$el.html("Loading...");
@@ -209,8 +215,9 @@
 			for(var i = 0; i < models.length; i++) {
 				this.$el.append(
 					this.tpl(
-						models[i].toJSON()
-				));
+						this.format(
+							models[i].toJSON()
+				)));
 			}
 
 			this.$el.append(
@@ -228,6 +235,7 @@
 
 	
 	var CommentsV = Backbone.View.extend({
+		className : "comments",
 		initialize : function() {
 			store.bind("threadLoading", this.showLoading, this);
 			store.bind("threadLoaded", this.render, this);
@@ -256,6 +264,11 @@
 			currentThread.render();
 
 			return this;
+		},
+		delegateEvents : function() {
+			for(var v in this.subviews) {
+				this.subviews[v].render();
+			}
 		}
 	});
 
@@ -268,11 +281,15 @@
 			"submit" : "handleReply"
 		},
 		subviews : {},//It's not immediately obvious but this view store is shared by all copies of this class
+		format : function(obj) {
+			return obj;
+		},
 		render : function() {
 			this.$el.html(
 				this.tpl(
-					this.model.toJSON()
-			));
+					this.format(
+						this.model.toJSON()
+			)));
 
 			var children = this.model.getChildren();
 			var id;
@@ -286,13 +303,12 @@
 				}
 
 				$children.append(this.subviews[id].render().el);
-				this.subviews[id].delegateEvents();
 			}
 
+			this.delegateEvents();
 			return this;
 		},
 		showReply : function(ev) {
-			console.log(this);
 			this.$el.find(".reply").first().html(this.replyTpl());
 			return false;
 		},
@@ -311,6 +327,7 @@
 
 		new ThreaditR();
 		new ThreaditV();
+
 		Backbone.history.start({pushState : true});
 	});
 })();

@@ -1,0 +1,57 @@
+html {
+	background: #19b6ff;
+}
+
+body {
+	font-family: Garamond;
+	margin: 0 auto;
+	max-width: 900px;
+	padding-top:10px;
+}
+
+
+h2 {
+	font-weight:bold;
+	font-size:28px;
+	margin: 18px 0;
+}
+
+h3 {
+	font-weight: bold;
+	font-size: 18px;
+	margin-bottom: 10px;
+}
+
+p {
+	margin: 14px 0;
+	line-height:22px;
+}
+
+ul {
+	list-style: disc;
+	padding-left:18px;
+	line-height:22px;
+}
+
+a, a:hover {
+	text-decoration: none;
+	color: #0096ff;
+	font-weight: bold;
+}
+
+a:hover {
+	color: #4ec7ff;
+}
+
+
+.main {
+	background: #fefefe;
+	border-radius: 4px;
+	margin: 16px 0;
+	border: 1px solid #eee;
+	padding: 18px 18px 6px;
+	box-shadow: 2px 2px 2px 2px #777;
+}
+
+
+
