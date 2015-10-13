@@ -1,5 +1,5 @@
 html {
-	background: #19b6ff;
+	background: #002a41;
 }
 
 body {
@@ -9,20 +9,29 @@ body {
 	padding-top:10px;
 }
 
+h2 {
+	font-weight:bold;
+	font-size:28px;
+	margin: 18px 0;
+}
 p {
 	line-height:22px;
 }
 
 a, a:hover {
 	text-decoration: none;
-	color: #0096ff;
+	color: #0071b5;
 	font-weight: bold;
 }
 
 a:hover {
-	color: #4ec7ff;
+	color: #00a2ff;
 }
 
+.head_links {
+	float:right;
+	margin-top:18px;
+}
 
 .main {
 	background: #fefefe;
@@ -33,20 +42,40 @@ a:hover {
 	box-shadow: 2px 2px 2px 2px #777;
 }
 
-.comment {
+.children {
 	padding-left:15px;
 	border-left:2px solid #ccc;
-	border-bottom: 1px solid #ccc;
-	padding-bottom:2px;
+	/*border-bottom: 1px solid #ccc;*/
+}
+.comment
+{
+	padding-bottom:4px;
 }
 
-
+.reply {
+	border-top:1px solid #ccc;
+	padding: 4px 0;
+}
 
 textarea {
-	width:100%;
+	width:99%;
 }
 
 p.comment_count {
 	font-size: 12px;
 	font-style: italic;
+}
+
+input[type=submit] {
+	background: #0071b5;
+	border:0;
+	cursor: pointer;
+	padding: 11px 40px;
+	color: #fff;
+	font-weight: bold;
+	margin-top:4px;
+}
+
+input[type=submit]:hover {
+	background: #00a2ff;
 }

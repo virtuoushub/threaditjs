@@ -1,4 +1,4 @@
-### A more comprehensive example application for SPA libraries/frameworks.  
+### A comprehensive example application for SPA libraries/frameworks.  
 
 This page collects implementations of a thread-based discussion application all interacting with the same API.  The intent is to provide side-by-side comparisons for tasks every ES2015 client application will necessarily complete.  
 

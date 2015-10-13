@@ -1,4 +1,15 @@
+//Welcome to the basic Backbone application, where _.bindAll is a necessary part of initialization,
+//where delegateEvents has to be invoked on certain redraws, and where `this` has to be passed as a third
+//parameter for event subscription.
+
+//Modern brand new Backbone environments generally use additional libraries for a very good reason.
+
+//Still, I thought it sensible to present what I consider to be classical Backbone style as a starting point.  
+
 (function() {
+
+	//The Router directs the data layer; the Views determine what should be active
+	//based on the state of the data layer.  
 	var ThreaditR = Backbone.Router.extend({
 		routes : {
 			"" : "home",
@@ -14,6 +25,8 @@
 
 	var CommentM = Backbone.Model.extend({
 		children: null,
+		//After the response is received and the models are added, the model
+		//still needs to collect actual references to fill in the basic IDs it has.
 		linkChildren : function() {
 			this.children = [];
 			ids = this.get("children");
@@ -27,28 +40,36 @@
 		getChildren : function() {
 			return this.children;
 		},
+		//Update when a comment has been added by the user.  
 		addChild : function(m) {
 			this.children.push(m);
 		}
 	});
 
+	//
 	var CommentC = Backbone.Collection.extend({
 		model : CommentM,
 		initialize : function() {
-			_.bindAll(this, "loadHome", "loadThread", "parseHome", "parseThread", "createComment", "createThread", "commentSuccess", "threadSuccess", "notifyError", "getHome");
+			//The more clear thinking method is to list what you want bound, knowing that if this is not provided many
+			//extraneous functions on Backbone.Collection will be bound.  
+
+			//Note that this is for functions passed to promises.  
+			_.bindAll(this, "parseHome", "parseThread", "commentSuccess", "threadSuccess", "notifyError");
 		},
 		home : null,
+		//We eschew the Collection fetch/parse methods entirely for clarity and to make the Collection
+		//a simple store of all the comments we have, regardless of where we navigate.  
 		loadHome : function() {
 			this.trigger("homeLoading");
 
-			$.get("http://api.local.threaditjs.com/threads")
+			$.get("http://api.threaditjs.com/threads")
 				.then(this.parseHome)
 				.fail(this.notifyError);
 		},
 		loadThread : function(id) {
 			this.trigger("threadLoading");
 			this.currentId = id;
-			$.get("http://api.local.threaditjs.com/comments/" + id)
+			$.get("http://api.threaditjs.com/comments/" + id)
 				.then(this.parseThread)
 				.fail(this.notifyError);
 		},
@@ -67,7 +88,7 @@
 			this.trigger("threadLoaded");
 		},
 		createComment: function(id, text) {
-			$.post("http://api.local.threaditjs.com/comments/create", {
+			$.post("http://api.threaditjs.com/comments/create", {
 				parent: id,
 				text: text
 			})
@@ -78,6 +99,7 @@
 			var parent = data.data.parent_id;
 			var newM = this.add(data.data);
 
+			//Link the parent to its new child
 			this.get(parent).addChild(
 				newM
 			);
@@ -87,7 +109,7 @@
 			this.trigger("threadLoaded");
 		},
 		createThread : function(text) {
-			$.post("http://api.local.threaditjs.com/threads/create", {
+			$.post("http://api.threaditjs.com/threads/create", {
 				text: text
 			})
 			.then(this.threadSuccess)
@@ -120,6 +142,7 @@
 
 	var ThreaditV = Backbone.View.extend({
 		tpl : _.template($("#threadit").html()),
+		//The SPA must intercept every navigation attempt.  
 		events : {
 			"click a" : "navigate"
 		},
@@ -129,6 +152,8 @@
 			
 			store.bind("homeLoading", this.showHome, this);
 			store.bind("threadLoading", this.showThread, this);
+
+			//Take the page!
 			this.setElement($("body"));
 			this.render();
 		},
@@ -141,6 +166,7 @@
 			this.comments.delegateEvents();
 		},
 		navigate : function(ev) {
+			//First we determine if there's a reason to use the default behavior
 			var href = $(ev.currentTarget).attr('href');
 			if(ev.ctrlKey||ev.shiftKey||ev.altKey||ev.metaKey) {
 				return true;
@@ -149,10 +175,6 @@
 			//Middle click
 			if(ev.button==4 || ev.which==2) {
 				return true;
-			}
-
-			if(href.substring(0,11)=="javascript:") {
-				return false;
 			}
 
 			//Off-site links
@@ -164,9 +186,12 @@
 				return true;
 			}
 			
+			if(href.substring(0,11)=="javascript:") {
+				return false;
+			}
+
 			ev.preventDefault();
 			Backbone.history.navigate(href, {trigger:true});
-
 			window.scrollTo(0, 0);
 		},
 		render : function() {
@@ -280,7 +305,7 @@
 			"click .reply a" : "showReply",
 			"submit" : "handleReply"
 		},
-		subviews : {},//It's not immediately obvious but this view store is shared by all copies of this class
+		subviews : {}, //It's not immediately obvious but this view store is shared by all copies of this class
 		format : function(obj) {
 			return obj;
 		},
