@@ -1,0 +1,69 @@
+<!doctype html>
+<link rel="stylesheet" href="http://local.threaditjs.com/reset.css"/>
+<link rel="stylesheet" href="http://local.threaditjs.com/shared.css"/>
+<link rel="stylesheet" href="/colors.css"/>
+
+
+<script type="text/x-handlebars" data-template-name="application">
+	<p class="head_links"><a href="https://github.com/koglerjs/threaditjs/tree/master/examples/ember">Ember Example Source</a> | 
+		<a href="http://threaditjs.com">ThreaditJS Home</a>
+	</p>
+
+	<h2><a href="http://ember.threaditjs.com">ThreaditJS</a></h2>
+
+	<div class="main">{{outlet}}</div>
+</script>
+
+
+<script type="text/x-handlebars" data-template-name="index">
+	{{#each model.threads as |thread|}}
+		<p class="thread_title">{{#link-to "thread" thread.id}}  {{thread.text}}{{/link-to}}</p>
+		<p class="comment_count">{{thread.comment_count}} comment(s)</p>
+		<hr/>
+	{{/each}}
+
+	<form>
+		<textarea></textarea>
+		<input type="submit" value="Post!"/>
+	</form>
+</script>
+
+<script type="text/x-handlebars" data-template-name="loading">
+	Loading!
+</script>
+
+<script type="text/x-handlebars" data-template-name="error">
+	Error!
+</script>
+
+<script type="text/x-handlebars" data-template-name="notFound">
+	Not found!
+</script>
+
+<script type="text/x-handlebars" data-template-name="thread">
+	{{render "thread_item" model.root}}
+</script>
+
+<script type="text/x-handlebars" data-template-name="thread_item">
+	<p>{{ model.text }} </p>
+
+	<div class="reply"><a href="javascript:void(0)">Reply</a></div>
+
+	<div class="children">
+		{{#each model.children as |child|}}
+			{{render "thread_item" child}}
+		{{/each}}
+	</div>
+</script>
+
+<script type="text/x-handlebars" id="comment_reply">
+	<form>
+		<textarea></textarea>
+		<input type="submit" value="Reply!"/>
+	</form>
+</script>
+
+<script src="/jquery-1.11.3.js"></script>
+<script src="/ember.js"></script>
+<script src="/app.js"></script>
+<script src="/ember-template-compiler.js"></script>

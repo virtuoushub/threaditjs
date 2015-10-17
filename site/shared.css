@@ -6,13 +6,12 @@ body {
 	font-family: Garamond;
 	margin: 0 auto;
 	max-width: 900px;
-	padding-top:10px;
 }
 
 h2 {
 	font-weight:bold;
 	font-size:28px;
-	margin: 18px 0;
+	padding: 24px 0 0;
 }
 p {
 	line-height:22px;
@@ -30,7 +29,7 @@ a:hover {
 
 .head_links {
 	float:right;
-	margin-top:18px;
+	padding-top:26px;
 }
 
 .main {
@@ -45,7 +44,6 @@ a:hover {
 .children {
 	padding-left:15px;
 	border-left:2px solid #ccc;
-	/*border-bottom: 1px solid #ccc;*/
 }
 .comment
 {

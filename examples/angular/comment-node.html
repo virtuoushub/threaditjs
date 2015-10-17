@@ -1,0 +1,13 @@
+<p>{{node.text}}</p>
+
+<div class="reply">
+	<a ng-hide="node.replying" ng-click="node.replying=true" href="javascript:void(0)">Reply</a>
+
+	<textarea ng-show="node.replying" ng-model="node.reply_text"></textarea>
+	<input ng-show="node.replying" type="submit" ng-click="$parent.createResponseOn(node)" value="Post!"/>
+
+</div>
+
+<div class="children">
+	<div class="comment" ng-repeat="node in node.children" ng-include="'comment-node.html'"/>
+</div>

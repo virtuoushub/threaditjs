@@ -1,0 +1,10 @@
+<div ng-repeat='thread in threads'>
+	<p class="thread_title"><a href="/thread/{{thread.id}}">{{trimTitle(thread.text)}}</a></p>
+	<p class="comment_count">{{thread.comment_count}} 
+		<ng-pluralize count="thread.comment_count" when="{'0':'comments','1':'comment', 'other': 'comments'}"</ng-pluralize></p>
+	<hr/>
+</div>
+	
+		<textarea ng-model="newpost.text"></textarea>
+		<input type="submit" ng-click="create(newpost)" value="Post!"/>
+	
