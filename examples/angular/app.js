@@ -75,11 +75,12 @@ threaditControllers.controller("CommentsCtrl", ["$scope", "$routeParams", "Comme
 	}
 ]);
 
+var apiUrl = "http://api.threaditjs.com/";
 var commentServices = angular.module("commentServices", ["ngResource"]);
 
 commentServices.factory("Home", ["$resource", 
 	function($resource) {
-		return $resource("http://api.local.threaditjs.com/threads",
+		return $resource(apiUrl + "threads",
 			{},
 			{
 				query: {
@@ -91,7 +92,7 @@ commentServices.factory("Home", ["$resource",
 				}
 			},
 			save : {
-				url : "http://api.local.threaditjs.com/threads/create",
+				url : apiUrl + "threads/create",
 				method: "POST"
 			}
 			}
@@ -102,7 +103,7 @@ commentServices.factory("Home", ["$resource",
 
 commentServices.factory("Comment", ["$resource",
 	function($resource) {
-		return $resource("http://api.local.threaditjs.com/comments/:id",
+		return $resource(apiUrl + "comments/:id",
 			{},
 			{
 				query: {
@@ -133,7 +134,7 @@ commentServices.factory("Comment", ["$resource",
 				}
 			},
 			save : {
-				url : "http://api.local.threaditjs.com/comments/create",
+				url : apiUrl + "comments/create",
 				method: "POST"
 			}
 			}

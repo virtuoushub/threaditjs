@@ -1,48 +1,8 @@
 <!doctype html>
 <link rel="stylesheet" href="http://threaditjs.com/reset.css"/>
 <link rel="stylesheet" href="http://threaditjs.com/shared.css"/>
-
-
-<script type="text/template" id="threadit">
-	<p class="head_links"><a href="https://github.com/koglerjs/threaditjs/tree/master/examples/mithril">Mithril Source</a> | 
-		<a href="http://threaditjs.com">ThreaditJS Home</a>
-	</p>
-
-	<h2><a href="http://mithril.threaditjs.com">ThreaditJS</a></h2>
-
-	<div class="main"></div>
-</script>
-
-<script type="text/template" id="thread_item">
-	<p class="thread_title"><a href="/thread/<%= id %>">
-		<%= text %>
-	</a></p>
-	<p class="comment_count"><%= comment_count %> comment(s)</p>
-	<hr/>
-</script>
-
-<script type="text/template" id="new_thread">
-	<form>
-		<textarea></textarea>
-		<input type="submit" value="Post!"/>
-	</form>
-</script>
-
-<script type="text/template" id="comment">
-	<p><%= text %></p>
-
-	<div class="reply"><a href="javascript:void(0)">Reply</a></div>
-
-	<div class="children"></div>
-
-</script>
-
-<script type="text/template" id="comment_reply">
-	<form>
-		<textarea></textarea>
-		<input type="submit" value="Reply!"/>
-	</form>
-</script>
-
+<link rel="stylesheet" href="http://mithril.local.threaditjs.com/colors.css"/>
+<body>
 <script src="/mithril.js"></script>
 <script src="/app.js"></script>
+</body>
