@@ -24,9 +24,13 @@ All implementations will use the same API, located at http://api.threaditjs.com.
 
 ## Examples
 
-Currently, I only have:
+Currently, I have:
 
 * [Backbone](http://backbone.threaditjs.com)
+* [Ember (incomplete, read-only)](http://ember.threaditjs.com)
+* [Angular](http://angular.threaditjs.com)
+* [Mithril (incomplete, read-only)](http://mithril.threaditjs.com)
+* [Redux-React](http://reduxreact.threaditjs.com)
 
 ---
 
