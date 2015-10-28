@@ -1,6 +1,5 @@
 var home = {
 	controller : function() {
-		console.log('home');
 		home.vm.init();
 	},
 	view : function() {

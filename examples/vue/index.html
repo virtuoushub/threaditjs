@@ -1,0 +1,62 @@
+<!doctype html>
+<link rel="stylesheet" href="http://threaditjs.com/reset.css"/>
+<link rel="stylesheet" href="http://threaditjs.com/shared.css"/>
+
+
+<body>
+	<p class="head_links"><a href="https://github.com/koglerjs/threaditjs/tree/master/examples/vue">Example Source</a> | 
+		<a href="http://threaditjs.com">ThreaditJS Home</a>
+	</p>
+
+	<h2><a href="http://vue.threaditjs.com">ThreaditJS</a></h2>
+
+	<div class="main">
+		<div id="app"></div>
+	</div>
+</body>
+
+<script type="text/x-template" id="threadit">
+	<router-view></router-view>
+</script>
+
+<script type="text/x-template" id="thread_list">
+	<div v-if="$loadingRouteData">Loading...</div>
+	<div v-if="!$loadingRouteData">
+		<div v-for="thread in threads">
+
+			<p class="thread_title"><a v-link="{name: 'thread', params: {id: thread.id } }">
+				{{thread.text | trimThreadTitle}}
+			</a></p>
+			<p class="comment_count">{{thread.comment_count}} comment(s)</p>
+			<hr/>
+		</div>
+		<form v-on:submit.prevent="handleSubmit">
+			<textarea v-model="responseText"></textarea>
+			<input type="submit" value="Post!"/>
+		</form>
+	</div>
+</script>
+
+<script type="text/x-template" id="comment">
+	<div v-if="$loadingRouteData">Loading...</div>
+	<div v-if="!$loadingRouteData">
+		<p>{{ text }}</p>
+
+		<div class="reply">
+			<a v-if="!replying" v-on:click="startReplying" href="javascript:void(0)">Reply</a>
+			<form v-if="replying" v-on:submit.prevent="handleSubmit">
+				<textarea v-model="responseText"></textarea>
+				<input type="submit" value="Reply!"/>
+			</form>
+		</div>
+
+		<div class="children">
+			<comment v-for="comment in children" :text="comment.text" :children="comment.children" :id="comment.id"></comment>
+		</div>
+	</div>
+</script>
+
+<script src="/vue.js"></script>
+<script src="/vue-router.js"></script>
+<script src="/reqwest.js"></script>
+<script src="/app.js"></script>

@@ -2,7 +2,7 @@
 
 This page collects implementations of a thread-based discussion application all interacting with the same API.  The intent is to provide side-by-side comparisons for tasks every ES2015 client application will necessarily complete.  
 
-The main application shows a list of threads similar to a well known Internet discussion forum.  The user can create a new thread, display a thread's comments, and respond to a specific comment.  [This is a baseline implementation](http://backbone.threaditjs.com).
+The main application shows a list of threads similar to a well known Internet discussion forum.  The user can create a new thread, display a thread's comments, and respond to a specific comment.  
 
 ## Goals
 
@@ -27,10 +27,11 @@ All implementations will use the same API, located at http://api.threaditjs.com.
 Currently, I have:
 
 * [Backbone](http://backbone.threaditjs.com)
-* [Ember (incomplete, read-only)](http://ember.threaditjs.com)
+* [Ember](http://ember.threaditjs.com)
 * [Angular](http://angular.threaditjs.com)
-* [Mithril (incomplete, read-only)](http://mithril.threaditjs.com)
-* [Redux-React](http://reduxreact.threaditjs.com)
+* [Mithril](http://mithril.threaditjs.com)
+* [Redux+React](http://reduxreact.threaditjs.com)
+* [Vue](http://vue.threaditjs.com)
 
 ---
 
