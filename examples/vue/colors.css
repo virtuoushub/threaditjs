@@ -1,0 +1,38 @@
+html {
+	background: #42B983;
+}
+.main {
+	font-family: "Source Sans Pro","Helvetica Neue",Arial,sans-serif;
+}
+input[type=submit] {
+	background-color:#4FC08D;
+	border-radius: 4px;
+	font-family: "Roboto Mono", monospace;
+}
+
+.head_links {
+	color: #fff;
+}
+
+p.head_links a {
+	color : #fff;
+}
+p.head_links a:hover {
+	color : #fff;
+}
+
+h2 a {
+	color : #fff
+}
+
+h2 a:hover {
+	color : #fff;
+}
+
+a {
+	color : #42B983;
+}
+a:hover {
+	color: #42B983;
+	border-bottom: 2px solid #42B983;
+}
