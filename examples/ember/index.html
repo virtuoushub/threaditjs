@@ -5,11 +5,11 @@
 
 
 <script type="text/x-handlebars" data-template-name="application">
-	<p class="head_links"><a href="https://github.com/koglerjs/threaditjs/tree/master/examples/ember">Ember Example Source</a> | 
+	<p class="head_links"><a href="https://github.com/koglerjs/threaditjs/tree/master/examples/ember">Source</a> | 
 		<a href="http://threaditjs.com">ThreaditJS Home</a>
 	</p>
 
-	<h2><a href="http://ember.threaditjs.com">ThreaditJS</a></h2>
+	<h2><a href="http://ember.threaditjs.com">ThreaditJS: Ember</a></h2>
 
 	<div class="main">{{outlet}}</div>
 </script>
@@ -22,8 +22,8 @@
 		<hr/>
 	{{/each}}
 
-	<form>
-		<textarea></textarea>
+	<form {{action 'newThread' on='submit'}}>
+		{{textarea name="text" value=model.newText}}
 		<input type="submit" value="Post!"/>
 	</form>
 </script>
@@ -47,20 +47,22 @@
 <script type="text/x-handlebars" data-template-name="thread_item">
 	<p>{{ model.text }} </p>
 
-	<div class="reply"><a href="javascript:void(0)">Reply</a></div>
+	<div class="reply">
+		{{#if model.replying}}
+			<form {{action 'newComment' model on='submit'}}>
+				{{textarea name="text" value=model.newText}}	
+				<input type="submit" value="Reply!"/>
+			</form>
+		{{else}}
+			<a {{action 'showReply' model on='click'}}>Reply</a>
+		{{/if}}
+	</div>
 
 	<div class="children">
 		{{#each model.children as |child|}}
 			{{render "thread_item" child}}
 		{{/each}}
 	</div>
-</script>
-
-<script type="text/x-handlebars" id="comment_reply">
-	<form>
-		<textarea></textarea>
-		<input type="submit" value="Reply!"/>
-	</form>
 </script>
 
 <script src="/jquery-1.11.3.js"></script>

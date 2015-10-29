@@ -6,6 +6,7 @@ a{
 	color: #161;
 	text-decoration:none;
 	font-weight:normal;
+	cursor: pointer;
 }
 
 a:hover {

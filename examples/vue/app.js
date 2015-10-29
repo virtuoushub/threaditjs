@@ -3,7 +3,6 @@ Vue.config.debug = true;
 var Home = Vue.extend({
 	template : "#thread_list",
 	route : {
-
 		data : function() {
 			return 	reqwest({
 				url : "http://api.threaditjs.com/threads",

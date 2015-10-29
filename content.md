@@ -38,7 +38,3 @@ Currently, I have:
 ## Contributing
 
 See the [Github page](http://github.com/koglerjs/threaditjs)!
-
----
-
-A longer look at the motivations for this project can be found [here](https://koglerjs.com/verbiage/threadit).  
