@@ -229,7 +229,11 @@ var Thread = React.createClass({
 		})
 		.then(function(response) {
 			self.refs.text.value = "";
-			self.setState({replying : false});
+			self.setState({
+				replying : false
+			});
+			threadsData[self.props.thread_id].children.push(response.data);
+			self.render();
 		});
 	}
 });
