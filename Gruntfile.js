@@ -35,8 +35,17 @@ module.exports = function(grunt) {
 				files : ["layout.html", "content.md", "img/**/*", "less/**.*"],
 				tasks : ["default"]
 			}
+		},
+		jshint : {
+			nag : [
+				"examples/**/*.js",
+				"!examples/**/lib/*.js"
+				"lib/**/*.js",
+				"index.js",
+				"Gruntfile.js"
+			]
 		}
-	}
+	};
 
 	grunt.registerTask("default", [
 		"less:run", "copy:img", "markdown:index"
