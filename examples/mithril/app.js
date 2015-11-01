@@ -39,6 +39,7 @@ var home = {
 		init : function() {
 			home.vm.threads = m.request({method : "GET", url : T.apiUrl + "/threads"})
 				.then(function(response) {
+					document.title = "ThreaditJS: Mithril | Home";
 					return response.data;
 				});
 		},
@@ -104,7 +105,11 @@ var thread = {
 			thread.vm.thread = m.request({
 				method : "GET",
 				url : T.apiUrl + "/comments/" + id
-			}).then(T.transformResponse);
+			}).then(T.transformResponse)
+			.then(function(obj) {
+				document.title = "ThreaditJS: Mithril | " + T.trimTitle(obj.root.text);
+				return obj;
+			});;
 		},
 		showReplying : function(event) {
 			this.replying = true;

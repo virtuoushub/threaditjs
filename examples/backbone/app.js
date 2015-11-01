@@ -11,6 +11,10 @@
 	//The Router directs the data layer; the Views determine what should be active
 	//based on the state of the data layer.  
 	var ThreaditR = Backbone.Router.extend({
+		initialize : function() {
+			store.bind("threadLoaded", this.setTitle, this);
+			this.setTitle();
+		},
 		routes : {
 			"" : "home",
 			"thread/:id" : "thread"
@@ -20,7 +24,21 @@
 		},
 		thread : function(id) {
 			store.loadThread(id);
+		},
+		setTitle : function(str) {
+			var current = store.getCurrent();
+			console.log(str);
+			if(str) {
+				$("title").html("ThreaditJS: Backbone | " + str);
+			}
+			else if(current){
+				$("title").html("ThreaditJS: Backbone | " + T.trimTitle(current.get("text")));
+			}
+			else {
+				$("title").html("ThreaditJS: Backbone");
+			}
 		}
+
 	});
 
 	var CommentM = Backbone.Model.extend({

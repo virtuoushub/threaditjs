@@ -7,6 +7,7 @@ var Home = Vue.extend({
 				crossOrigin: true
 			})
 			.then(function(data) {
+				document.title = "ThreaditJS: Vue | Home";
 				return {threads: data.data};
 			});
 		}
@@ -42,6 +43,7 @@ var Comment = Vue.component("comment", {
 				crossOrigin: true
 			})
 			.then(function(response){
+				document.title = "ThreaditJS: Vue | " + T.trimTitle(response.data[0].text);
 				return T.transformResponse(response).root;
 			});
 		}
@@ -90,6 +92,5 @@ router.map({
 		component : Comment
 	}
 });
-
 
 router.start(Threadit, "#app");

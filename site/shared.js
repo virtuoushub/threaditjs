@@ -3,9 +3,12 @@
 	var titleTrimLength = 120;
 	var apiRoot = "http://api.threaditjs.com";
 	var exports = {
-		trimTitle : function(str) {
-			if(str.length>120) {
-				str = str.substr(0,120) + "...";
+		trimTitle : function(str, optionalLength) {
+			if(!optionalLength) {
+				optionalLength = titleTrimLength;
+			}
+			if(str.length>optionalLength) {
+				str = str.substr(0,optionalLength) + "...";
 			}
 			return str;
 		},
@@ -33,9 +36,7 @@
 		},
 		apiUrl : apiRoot,
 		apiUrlSlash : apiRoot + "/"
-
 	};
-
 
 	//Intended for use only in the browser or, if you really wanted to for some reason, CommonJS
 	if(typeof module === "undefined") {

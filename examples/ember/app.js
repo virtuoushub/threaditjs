@@ -32,6 +32,9 @@ threadit.IndexRoute = Ember.Route.extend({
 				Ember.set(model, "threads", newList);
 			});
 		}
+	},
+	afterModel : function(model) {
+		document.title = "ThreaditjS: Ember | Home";
 	}
 });
 
@@ -57,5 +60,8 @@ threadit.ThreadRoute = Ember.Route.extend({
 				Ember.set(node, "children", newChildren);
 			});
 		}
+	},
+	afterModel : function(model) {
+		document.title = "ThreaditJS: Ember | " + T.trimTitle(model.root.text, 80);
 	}
 });
