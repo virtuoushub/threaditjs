@@ -37,13 +37,19 @@ module.exports = function(grunt) {
 			}
 		},
 		jshint : {
-			nag : [
-				"examples/**/*.js",
-				"!examples/**/lib/*.js"
-				"lib/**/*.js",
-				"index.js",
-				"Gruntfile.js"
-			]
+			nag : {
+				files : [{
+					src : ["examples/**/*.js",
+					"!examples/**/lib/*.js",
+					"lib/**/*.js",
+					"index.js",
+					"Gruntfile.js"]
+				}],
+				options : {
+					jshintrc : true
+				}
+			}
+
 		}
 	};
 

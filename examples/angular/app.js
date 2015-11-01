@@ -33,10 +33,10 @@ threaditControllers.controller("ThreadListCtrl", ["$scope", "Home",
 				return str.substr(0, 120) + "...";
 			}
 			return str;
-		}
+		};
 
 		$scope.create = function(post) {
-			var request = Home.save({text: post.text})
+			var request = Home.save({text: post.text});
 
 			request.$promise.then(function(data){
 				$scope.newpost.text = "";
@@ -64,14 +64,14 @@ threaditControllers.controller("CommentsCtrl", ["$scope", "$routeParams", "Comme
 			request.$promise.then(function(data) {
 				node.reply_text = "";
 				node.replying = false;
-				$scope.addComment(data.data)
+				$scope.addComment(data.data);
 			});
 		};
 
 		$scope.addComment = function(comment) {
 			$scope.comment.nodes[comment.parent_id].children.push(comment);
 			$scope.comment.nodes[comment.id] = comment;
-		}
+		};
 	}
 ]);
 
@@ -122,7 +122,7 @@ commentServices.factory("Comment", ["$resource",
 					}
 
 					var ids;
-					for(var i = 0; i < comments.length; i++) {
+					for(i = 0; i < comments.length; i++) {
 						ids = comments[i].children;
 						comments[i].children = [];
 						for(var j = 0; j < ids.length; j++) {

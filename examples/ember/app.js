@@ -55,7 +55,7 @@ threadit.ThreadRoute = Ember.Route.extend({
 				}
 
 				var ids;
-				for(var i = 0; i < comments.length; i++) {
+				for(i = 0; i < comments.length; i++) {
 					ids = comments[i].children;
 					comments[i].children = [];
 					for(var j = 0; j < ids.length; j++) {

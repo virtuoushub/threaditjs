@@ -228,7 +228,7 @@
 			this.$el.html("An error occurred!  Try refreshing!");
 		},
 		render : function() {
-			if(store.models.length==0) {
+			if(store.models.length===0) {
 				this.$el.html("No threads found.");
 				return this;
 			}
