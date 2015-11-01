@@ -31,7 +31,7 @@ The goal is to have an application with roughly similar simplicity while providi
 
 ## The ThreaditJS API
 
-All implementations will use the same API, located at http://api.threaditjs.com.  Arguably someone could even come up with a native mobile consumer implementation.  
+All implementations will use the same API, located at api.threaditjs.com.  Arguably someone could even come up with a native mobile consumer implementation.  
 
 ---
 

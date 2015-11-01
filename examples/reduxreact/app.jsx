@@ -61,7 +61,7 @@ var Home = React.createClass({
 	componentDidMount : function() {
 		var self = this;
 		reqwest({
-			url : "http://api.threaditjs.com/threads",
+			url : T.apiUrl + "/threads",
 			crossOrigin: true
 		})
 		.then(function(response){
@@ -95,7 +95,7 @@ var Home = React.createClass({
 		var self = this;
 
 		reqwest({
-			url : "http://api.threaditjs.com/threads/create",
+			url : T.apiUrl + "/threads/create",
 			method : "post",
 			crossOrigin: true,
 			data : {
@@ -119,48 +119,19 @@ var ThreadListItem = React.createClass({
 			</div>
 		);
 	},
-	snip : function(str) {
-		if(str.length>120) {
-			str = str.substr(0, 120) + "...";
-		}
-		return str;
-	}
+	snip : T.trimTitle
 });
-
-var transformResponse = function(comments) {
-	var lookup = {};
-
-	var root;
-	for(var i = 0; i < comments.length; i++) {
-		lookup[comments[i].id] = comments[i];
-		if(!comments[i].parent_id) {
-			root = comments[i];
-		}
-	}
-
-	var ids;
-	for(var i = 0; i < comments.length; i++) {
-		ids = comments[i].children;
-		comments[i].children = [];
-		for(var j = 0; j < ids.length; j++) {
-			comments[i].children.push(lookup[ids[j]]);
-		}
-	}
-
-	return lookup;
-}
-
 
 threadsData = {};
 
 var store = {
 	loadThread : function(id) {
 		var promise = reqwest({
-			url : "http://api.threaditjs.com/comments/" + id,
+			url : T.apiUrl + "/comments/" + id,
 			crossOrigin: true
 		})
 		.then(function(response){
-			var lookup = transformResponse(response.data);
+			var lookup = T.transformResponse(response).lookup;
 			response.data.forEach(function(comment) {
 				threadsData[comment.id] = lookup[comment.id];
 			});
@@ -219,7 +190,7 @@ var Thread = React.createClass({
 		var text = this.refs.text.value;
 		var self = this;
 		reqwest({
-			url : "http://api.threaditjs.com/comments/create",
+			url : T.apiUrl + "/comments/create",
 			method : "post",
 			crossOrigin: true,
 			data : {

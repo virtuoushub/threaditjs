@@ -20,7 +20,8 @@ threaditApp.config(["$routeProvider", "$locationProvider",
 			});
 
 			$locationProvider.html5Mode(true);
-	}]);
+	}
+]);
 
 
 var threaditControllers = angular.module("threaditControllers", []);
@@ -46,14 +47,9 @@ threaditControllers.controller("ThreadListCtrl", ["$scope", "Home",
 	}
 ]);
 
-var dumb;
-
-
 threaditControllers.controller("CommentsCtrl", ["$scope", "$routeParams", "Comment", 
 	function($scope, $routeParams, Comment) {
 		$scope.comment = Comment.query({id: $routeParams.id});
-
-		dumb = $scope;
 
 		$scope.createResponseOn = function(node) {
 			var request=Comment.save({
@@ -75,7 +71,7 @@ threaditControllers.controller("CommentsCtrl", ["$scope", "$routeParams", "Comme
 	}
 ]);
 
-var apiUrl = "http://api.threaditjs.com/";
+var apiUrl = T.apiUrl + "/";
 var commentServices = angular.module("commentServices", ["ngResource"]);
 
 commentServices.factory("Home", ["$resource", 
@@ -89,12 +85,12 @@ commentServices.factory("Home", ["$resource",
 					data = angular.fromJson(data);
 
 					return data.data;
+					}
+				},
+				save : {
+					url : apiUrl + "threads/create",
+					method: "POST"
 				}
-			},
-			save : {
-				url : apiUrl + "threads/create",
-				method: "POST"
-			}
 			}
 		);
 	}
@@ -108,37 +104,16 @@ commentServices.factory("Comment", ["$resource",
 			{
 				query: {
 					isArray: false,
-				transformResponse : function(data) {
-					comments = angular.fromJson(data).data;
-
-					var map = {};
-
-					var root;
-					for(var i = 0; i < comments.length; i++) {
-						map[comments[i].id] = comments[i];
-						if(!comments[i].parent_id) {
-							root = comments[i];
-						}
+					transformResponse : function(response) {
+						comments = T.transformResponse(angular.fromJson(response));
+						return {nodes: comments.lookup, tree: [comments.root]};
 					}
-
-					var ids;
-					for(i = 0; i < comments.length; i++) {
-						ids = comments[i].children;
-						comments[i].children = [];
-						for(var j = 0; j < ids.length; j++) {
-							comments[i].children.push(map[ids[j]]);
-						}
-					}
-
-					return {nodes: map, tree: [root]};
+				},
+				save : {
+					url : apiUrl + "comments/create",
+					method: "POST"
 				}
-			},
-			save : {
-				url : apiUrl + "comments/create",
-				method: "POST"
-			}
 			}
 		);
 	}
 ]);
-

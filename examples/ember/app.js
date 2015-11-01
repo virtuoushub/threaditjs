@@ -1,5 +1,4 @@
 threadit = Ember.Application.create();
-
 threadit.Router.reopen({location: "auto"});
 
 //Index route is implied.  
@@ -7,17 +6,15 @@ threadit.Router.map(function() {
 	this.route("thread", {path: "/thread/:id"});
 });
 
+//as are controllers.
+
 threadit.IndexRoute = Ember.Route.extend({
 	model : function() {
-		return $.getJSON("http://api.threaditjs.com/threads/")
+		return $.getJSON(T.apiUrl + "/threads/")
 			.then(function(data) {
 				var str;
 				for(var i = 0; i < data.data.length; i++) {
-					str = data.data[i].text;
-					if(str.length>120) {
-						str = str.substr(0,120) + "...";
-					}
-					data.data[i].text = str;
+					data.data[i].text = T.trimTitle(data.data[i].text);
 				}
 				return {threads: data.data};
 			});
@@ -25,7 +22,7 @@ threadit.IndexRoute = Ember.Route.extend({
 	actions : {
 		newThread : function() {
 			var model = this.currentModel;
-			$.post("http://api.threaditjs.com/threads/create",{
+			$.post(T.apiUrl + "/threads/create",{
 				text: model.newText
 			})
 			.then(function(response){
@@ -40,38 +37,15 @@ threadit.IndexRoute = Ember.Route.extend({
 
 threadit.ThreadRoute = Ember.Route.extend({
 	model : function(params) {
-		return $.getJSON("http://api.threaditjs.com/comments/" + params.id)
-			.then(function(data) {
-				var comments = data.data;
-
-				var map = {};
-
-				var root;
-				for(var i = 0; i < comments.length; i++) {
-					map[comments[i].id] = comments[i];
-					if(!comments[i].parent_id) {
-						root = comments[i];
-					}
-				}
-
-				var ids;
-				for(i = 0; i < comments.length; i++) {
-					ids = comments[i].children;
-					comments[i].children = [];
-					for(var j = 0; j < ids.length; j++) {
-						comments[i].children.push(map[ids[j]]);
-					}
-				}
-
-				return {root: root};
-			});
+		return $.getJSON(T.apiUrl + "/comments/" + params.id)
+			.then(T.transformResponse);
 	},
 	actions : {
 		showReply : function(node) { 
 			Ember.set(node, "replying", true);
 		},
 		newComment : function(node) {
-			$.post("http://api.threaditjs.com/comments/create", {
+			$.post(T.apiUrl + "/comments/create", {
 				text : node.newText,
 				parent : node.id
 			})

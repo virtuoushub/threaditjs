@@ -1,11 +1,9 @@
-Vue.config.debug = true;
-
 var Home = Vue.extend({
 	template : "#thread_list",
 	route : {
 		data : function() {
 			return 	reqwest({
-				url : "http://api.threaditjs.com/threads",
+				url : T.apiUrl + "/threads",
 				crossOrigin: true
 			})
 			.then(function(data) {
@@ -18,7 +16,7 @@ var Home = Vue.extend({
 		handleSubmit : function() {
 			var self = this;
 			reqwest({
-				url : "http://api.threaditjs.com/threads/create",
+				url : T.apiUrl + "/threads/create",
 				method : "post",
 				crossOrigin: true,
 				data : {
@@ -33,48 +31,18 @@ var Home = Vue.extend({
 	}
 });
 
-Vue.filter("trimThreadTitle", function(str) {
-	if(str.length>120) {
-		str = str.substr(0, 120) + "...";
-	}
-
-	return str;
-});
-
-
-var transformResponse = function(comments) {
-	var lookup = {};
-
-	var root;
-	for(var i = 0; i < comments.length; i++) {
-		lookup[comments[i].id] = comments[i];
-		if(!comments[i].parent_id) {
-			root = comments[i];
-		}
-	}
-
-	var ids;
-	for(i = 0; i < comments.length; i++) {
-		ids = comments[i].children;
-		comments[i].children = [];
-		for(var j = 0; j < ids.length; j++) {
-			comments[i].children.push(lookup[ids[j]]);
-		}
-	}
-	return root;
-};
-
+Vue.filter("trimThreadTitle", T.trimTitle);
 
 var Comment = Vue.component("comment", {
 	template : "#comment",
 	route : {
 		data : function(transition) {
 			return 	reqwest({
-				url : "http://api.threaditjs.com/comments/" + transition.to.params.id,
+				url : T.apiUrl + "/comments/" + transition.to.params.id,
 				crossOrigin: true
 			})
-			.then(function(data) {
-				return transformResponse(data.data);
+			.then(function(response){
+				return T.transformResponse(response).root;
 			});
 		}
 	},
@@ -86,7 +54,7 @@ var Comment = Vue.component("comment", {
 		handleSubmit : function() {
 			var self = this;
 			reqwest({
-				url : "http://api.threaditjs.com/comments/create",
+				url : T.apiUrl + "/comments/create",
 				method : "post",
 				crossOrigin: true,
 				data : {

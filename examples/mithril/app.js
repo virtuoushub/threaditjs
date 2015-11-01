@@ -9,13 +9,6 @@ var header = function() {
 			)];
 };
 
-var trimTitle = function(str) {
-	if(str.length>120) {
-		str = str.substr(0, 120) + "...";
-	}
-	return str;
-};
-
 var newThread = function() {
 	return m("form", {onsubmit: home.vm.newThread}, [
 		m("textarea"),
@@ -33,7 +26,7 @@ var home = {
 			m("div.main", 
 				[home.vm.threads().map(function(thread){
 					return [
-						m("p", [m("a", {href : "/thread/" + thread.id, config:m.route}, trimTitle(thread.text))]),
+						m("p", [m("a", {href : "/thread/" + thread.id, config:m.route}, T.trimTitle(thread.text))]),
 						m("p.comment_count", thread.comment_count + " comment(s)"),
 						m("hr") 
 					];
@@ -44,7 +37,7 @@ var home = {
 	},
 	vm : {
 		init : function() {
-			home.vm.threads = m.request({method : "GET", url : "http://api.threaditjs.com/threads"})
+			home.vm.threads = m.request({method : "GET", url : T.apiUrl + "/threads"})
 				.then(function(response) {
 					return response.data;
 				});
@@ -53,7 +46,7 @@ var home = {
 			event.preventDefault();
 			m.request({
 				method: "POST", 
-				url : "http://api.threaditjs.com/threads/create",
+				url : T.apiUrl + "/threads/create",
 				data : { text: this[0].value }
 
 			})
@@ -103,35 +96,15 @@ var thread = {
 		thread.vm.init(m.route.param("id"));
 	},
 	view : function(node) {
-		node = thread.vm.thread().tree;
+		node = thread.vm.thread().root;
 		return [header(), m("div.main", nodeView(node))];
 	},
 	vm : {
 		init: function(id) {
 			thread.vm.thread = m.request({
 				method : "GET",
-				url : "http://api.threaditjs.com/comments/" + id
-			}).then(function(data) {
-				var comments = data.data;
-				var lookup = {};
-				for(var i = 0; i < comments.length; i++) {
-					lookup[comments[i].id] = comments[i];
-					if(!comments[i].parent_id) {
-						root = comments[i];
-					}
-				}
-
-				var ids;
-				for(i = 0; i < comments.length; i++) {
-					ids = comments[i].children;
-					comments[i].children = [];
-					for(var j = 0; j < ids.length; j++) {
-						comments[i].children.push(lookup[ids[j]]);
-					}
-				}
-
-				return { lookup : lookup , tree : root};
-			});
+				url : T.apiUrl + "/comments/" + id
+			}).then(T.transformResponse);
 		},
 		showReplying : function(event) {
 			this.replying = true;
@@ -142,7 +115,7 @@ var thread = {
 			var self = this;
 
 			m.request({
-				url : "http://api.threaditjs.com/comments/create", 
+				url : T.apiUrl + "/comments/create", 
 				method : "POST",
 				data : {
 					text : this.newComment,

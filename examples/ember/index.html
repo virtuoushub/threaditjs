@@ -2,7 +2,7 @@
 <link rel="stylesheet" href="http://threaditjs.com/reset.css"/>
 <link rel="stylesheet" href="http://threaditjs.com/shared.css"/>
 <link rel="stylesheet" href="/colors.css"/>
-
+<script src="http://threaditjs.com/shared.js"></script>
 
 <script type="text/x-handlebars" data-template-name="application">
 	<p class="head_links"><a href="https://github.com/koglerjs/threaditjs/tree/master/examples/ember">Source</a> | 
@@ -13,7 +13,6 @@
 
 	<div class="main">{{outlet}}</div>
 </script>
-
 
 <script type="text/x-handlebars" data-template-name="index">
 	{{#each model.threads as |thread|}}

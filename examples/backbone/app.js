@@ -62,14 +62,14 @@
 		loadHome : function() {
 			this.trigger("homeLoading");
 
-			$.get("http://api.threaditjs.com/threads")
+			$.get(T.apiUrl + "/threads")
 				.then(this.parseHome)
 				.fail(this.notifyError);
 		},
 		loadThread : function(id) {
 			this.trigger("threadLoading");
 			this.currentId = id;
-			$.get("http://api.threaditjs.com/comments/" + id)
+			$.get(T.apiUrl + "/comments/" + id)
 				.then(this.parseThread)
 				.fail(this.notifyError);
 		},
@@ -88,7 +88,7 @@
 			this.trigger("threadLoaded");
 		},
 		createComment: function(id, text) {
-			$.post("http://api.threaditjs.com/comments/create", {
+			$.post(T.apiUrl + "/comments/create", {
 				parent: id,
 				text: text
 			})
@@ -109,7 +109,7 @@
 			this.trigger("threadLoaded");
 		},
 		createThread : function(text) {
-			$.post("http://api.threaditjs.com/threads/create", {
+			$.post(T.apiUrl + "/threads/create", {
 				text: text
 			})
 			.then(this.threadSuccess)
@@ -216,9 +216,9 @@
 			store.bind("error", this.showError, this);
 		},
 		format : function(obj) {
-			if(obj.text.length>120) {
-				obj.text = obj.text.substr(0, 120) + "...";
-			}
+
+			obj.text = T.trimTitle(obj.text);
+
 			return obj;
 		},
 		showLoading : function() {
