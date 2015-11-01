@@ -1,4 +1,4 @@
-##A friendly competitor to TodoMVC
+## A friendly competitor to TodoMVC
 
 ### ThreaditJS is an example application for SPA libraries/frameworks.  
 
