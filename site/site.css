@@ -3,7 +3,7 @@ html {
 }
 
 body {
-	font-family: Garamond;
+	font-family: 'Lora', serif;
 	margin: 0 auto;
 	max-width: 900px;
 	padding-top:10px;
@@ -43,15 +43,58 @@ a:hover {
 	color: #4ec7ff;
 }
 
-
 .main {
 	background: #fefefe;
 	border-radius: 4px;
 	margin: 16px 0;
 	border: 1px solid #eee;
 	padding: 18px 18px 6px;
-	box-shadow: 2px 2px 2px 2px #777;
+	box-shadow: 2px 2px 2px 2px #444;
 }
 
 
+.icon .one {
+	margin-top: 0px;
+	width: 100%;
+}
 
+.icon .two {
+	width: 78%;
+}
+
+.icon .three {
+	width: 56%
+}
+
+.icon .four {
+	width: 34%;
+}
+
+.icon div {
+	height: 10px;
+	float:right;
+	margin-top: 12px;
+	background: #ff7800;
+	clear: right;
+	border-radius: 8px;
+}
+
+.icon {
+	padding: 10px;
+	width: 120px;
+	height:120px;
+	display: inline-block;
+	background: #fefefe;
+	border: 1px solid #eee;
+	box-shadow: 2px 2px 2px 2px #444;
+	border-radius: 4px;
+
+}
+
+.head h2 {
+	text-shadow: 2px 2px #444;
+	color : #fefefe;
+	margin: 0 0 0 10px;
+	display: inline;
+	font-size:70px;
+}

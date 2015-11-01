@@ -1,6 +1,17 @@
-### A comprehensive example application for SPA libraries/frameworks.  
+##A friendly competitor to TodoMVC
+
+### ThreaditJS is an example application for SPA libraries/frameworks.  
 
 This page collects implementations of a thread-based discussion application all interacting with the same API.  The intent is to provide side-by-side comparisons for tasks every ES2015 client application will necessarily complete.  
+
+Currently, I have:
+
+* [Backbone](http://backbone.threaditjs.com)
+* [Ember](http://ember.threaditjs.com)
+* [Angular](http://angular.threaditjs.com)
+* [Mithril](http://mithril.threaditjs.com)
+* [Redux+React](http://reduxreact.threaditjs.com)
+* [Vue](http://vue.threaditjs.com)
 
 The main application shows a list of threads similar to a well known Internet discussion forum.  The user can create a new thread, display a thread's comments, and respond to a specific comment.  
 
@@ -21,17 +32,6 @@ The goal is to have an application with roughly similar simplicity while providi
 ## The ThreaditJS API
 
 All implementations will use the same API, located at http://api.threaditjs.com.  Arguably someone could even come up with a native mobile consumer implementation.  
-
-## Examples
-
-Currently, I have:
-
-* [Backbone](http://backbone.threaditjs.com)
-* [Ember](http://ember.threaditjs.com)
-* [Angular](http://angular.threaditjs.com)
-* [Mithril](http://mithril.threaditjs.com)
-* [Redux+React](http://reduxreact.threaditjs.com)
-* [Vue](http://vue.threaditjs.com)
 
 ---
 
