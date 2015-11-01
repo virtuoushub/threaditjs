@@ -118,7 +118,7 @@ router.map({
 		component : Home
 	},
 	"/thread/:id" : {
-		name: 'thread',
+		name: "thread",
 		component : Comment
 	}
 });

@@ -1,4 +1,4 @@
-var threaditApp = angular.module('threaditApp', [
+var threaditApp = angular.module("threaditApp", [
 	"ngRoute",
 	"threaditControllers",
 	"commentServices"

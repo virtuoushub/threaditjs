@@ -1,6 +1,6 @@
 threadit = Ember.Application.create();
 
-threadit.Router.reopen({location: 'auto'});
+threadit.Router.reopen({location: "auto"});
 
 //Index route is implied.  
 threadit.Router.map(function() {

@@ -167,7 +167,7 @@
 		},
 		navigate : function(ev) {
 			//First we determine if there's a reason to use the default behavior
-			var href = $(ev.currentTarget).attr('href');
+			var href = $(ev.currentTarget).attr("href");
 			if(ev.ctrlKey||ev.shiftKey||ev.altKey||ev.metaKey) {
 				return true;
 			}
@@ -178,7 +178,7 @@
 			}
 
 			//Off-site links
-			if(href.substring(0,2)=='//'||href.substr(0,4)=='http') {
+			if(href.substring(0,2)=="//"||href.substr(0,4)=="http") {
 				return true;
 			}
 

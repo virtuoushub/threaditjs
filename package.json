@@ -6,7 +6,7 @@
   "scripts": {
     "test": "node_modules/.bin/mocha lib/test.js"
   },
-  "repository" : "https://github.com/koglerjs/threaditjs",
+  "repository": "https://github.com/koglerjs/threaditjs",
   "author": "",
   "license": "MIT",
   "dependencies": {
