@@ -8,6 +8,14 @@ input[type=submit] {
 	background-color:#4FC08D;
 	border-radius: 4px;
 	font-family: "Roboto Mono", monospace;
+	border: 0;
+	font-weight: bold;
+	border-bottom : 2px solid #3AA373;
+	color: #fff;
+}
+input[type=submit]:hover {
+	background-color: 2px solid #5dc596;
+	transform: translate(0, -2px);
 }
 
 .head_links {
@@ -30,6 +38,7 @@ h2 a:hover {
 }
 
 a {
+	text-decoration: none;
 	color : #42B983;
 }
 a:hover {
