@@ -13,11 +13,7 @@ a:hover {
 input[type=submit] {
 	background: #0071b5;
 	border:0;
-	cursor: pointer;
-	padding: 11px 40px;
 	color: #fff;
-	font-weight: bold;
-	margin-top:4px;
 }
 
 input[type=submit]:hover {

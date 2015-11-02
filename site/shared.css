@@ -1,4 +1,3 @@
-
 body {
 	font-family: Garamond;
 	margin: 0 auto;
@@ -49,4 +48,10 @@ textarea {
 p.comment_count {
 	font-size: 12px;
 	font-style: italic;
+}
+
+input[type=submit] {
+	padding: 11px 40px;
+	margin-top:4px;
+	cursor: pointer;
 }
