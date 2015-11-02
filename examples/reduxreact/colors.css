@@ -6,6 +6,9 @@ html {
 	font-family: proxima-nova,"Helvetica Neue",Helvetica,Roboto,Arial,sans-serif
 }
 
+h2 a, h2 a:hover, p.head_links a, p.head_links:hover, .head_links {
+	color : #00D8FF;
+}
 
 input[type=submit] {
 	background : #CC7A6F none repeat scroll 0% 0%;

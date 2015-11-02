@@ -3,6 +3,7 @@ html {
 }
 
 a{
+	text-decoration: none;
 	cursor: pointer;
 	color: #F23818;
 }
