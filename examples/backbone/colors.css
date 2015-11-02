@@ -1,0 +1,25 @@
+html {
+	background: #002a41;
+}
+
+a, a:hover {
+	text-decoration: none;
+	color: #0071b5;
+	font-weight: bold;
+}
+a:hover {
+	color: #00a2ff;
+}
+input[type=submit] {
+	background: #0071b5;
+	border:0;
+	cursor: pointer;
+	padding: 11px 40px;
+	color: #fff;
+	font-weight: bold;
+	margin-top:4px;
+}
+
+input[type=submit]:hover {
+	background: #00a2ff;
+}
