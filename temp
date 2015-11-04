@@ -1,0 +1,146 @@
+diff --git a/examples/backbone/app.js b/examples/backbone/app.js
+index 57e05fd..e9f930c 100644
+--- a/examples/backbone/app.js
++++ b/examples/backbone/app.js
+@@ -13,6 +13,7 @@
+ 	var ThreaditR = Backbone.Router.extend({
+ 		initialize : function() {
+ 			store.bind("threadLoaded", this.setTitle, this);
++			store.bind("homeLoaded", this.setTitle, this);
+ 			this.setTitle();
+ 		},
+ 		routes : {
+@@ -27,15 +28,14 @@
+ 		},
+ 		setTitle : function(str) {
+ 			var current = store.getCurrent();
+-			console.log(str);
+-			if(str) {
++			if(str && typeof str == "string") {
+ 				$("title").html("ThreaditJS: Backbone | " + str);
+ 			}
+ 			else if(current){
+ 				$("title").html("ThreaditJS: Backbone | " + T.trimTitle(current.get("text")));
+ 			}
+ 			else {
+-				$("title").html("ThreaditJS: Backbone");
++				$("title").html("ThreaditJS: Backbone | Home");
+ 			}
+ 		}
+ 
+@@ -79,6 +79,7 @@
+ 		//a simple store of all the comments we have, regardless of where we navigate.  
+ 		loadHome : function() {
+ 			this.trigger("homeLoading");
++			this.currentId = null;
+ 
+ 			$.get(T.apiUrl + "/threads")
+ 				.then(this.parseHome)
+diff --git a/examples/reduxreact/app.jsx b/examples/reduxreact/app.jsx
+index a9e1ae8..e6e1cee 100644
+--- a/examples/reduxreact/app.jsx
++++ b/examples/reduxreact/app.jsx
+@@ -1,65 +1,10 @@
+-/** @jsx React.DOM */
+-
+-var initialState = [];
+-
+-//one of the few times I like a multi assign var
+-var ADD_THREAD = "0",
+-	ADD_COMMENT = 0,
+-	THREAD_LOADED = null,
+-	HOME_LOADED = "undefined",
+-	FALSE = false;
+-//My hope is this reveals a hitherto unknown bug in the ES 'switch' specification.  
+-
+-
+-//Or it would, but honestly I'm looking at the Todo app's actions and I don't see why a switch statement is preferred
+-//to a simple lookup.  There's no reason for combineReducers to be any different from an object clone that errors
+-//on duplicate keys
+-
+-var actions = {};
+-
+-actions[ADD_THREAD] = function(store, action) {
+-	var newThread = action.thread;
+-	newThread.isRoot = true;
+-	
+-	return store.push(newThread); 
+-};
+-
+-actions[ADD_COMMENT] = function(store, action) {
+-	return store.push(actions.comment);
+-};
+-
+-actions[THREAD_LOADED] = function(store, action) {
+-	var lookup = {};
+-	for(var i = 0; i < action.comments.length; i++) {
+-		lookup[action.comments[i].id] = action.comments[i];
+-	}
+-	action.comments;
+-
+-	//if they didn't want us to modify what they sent in they shouldn't have sent it to us.  
+-	return store.concat(actions.comments);
+-};
+-
+-actions[HOME_LOADED] = function(store, action) {
+-	return actions.threads;
+-};
+-
+-actions[FALSE] = "";
+-
+-var comments = function(state, action) {
+-	if(!actions[action.type]) {
+-		throw new Error("I am unable to act without a command.  Err.  What I'm saying is, you have commanded me to error.");
+-	}
+-	return actions[action.type](state, action);
+-}
+-
+-//Redux.createStore(comments);
+-
+ var Home = React.createClass({
+ 	getInitialState : function() {
+ 		return {threads : []};
+ 	},
+ 	componentDidMount : function() {
+ 		var self = this;
++		document.title = "ThreaditJS: React | Home";
+ 		reqwest({
+ 			url : T.apiUrl + "/threads",
+ 			crossOrigin: true
+@@ -141,6 +86,8 @@ var store = {
+ 	}
+ }
+ 
++
++//View store, keyed on thread id
+ var threadsLookup = {};
+ 
+ var Thread = React.createClass({
+@@ -156,6 +103,8 @@ var Thread = React.createClass({
+ 			return <h2>Loading... </h2>
+ 		}
+ 
++		document.title = "ThreaditJS: React | " + T.trimTitle(comment.text);
++
+ 		var children = comment.children.map(function(child) {
+ 			if(!threadsLookup[child.id]) {
+ 				threadsLookup[child.id] = <Thread thread_id={child.id}/>
+diff --git a/examples/reduxreact/index.html b/examples/reduxreact/index.html
+index 579876f..b247e20 100644
+--- a/examples/reduxreact/index.html
++++ b/examples/reduxreact/index.html
+@@ -3,12 +3,13 @@
+ <link rel="stylesheet" href="http://threaditjs.com/shared.css"/>
+ <link rel="stylesheet" href="/colors.css"/>
+ <script src="http://threaditjs.com/shared.js"></script>
++<title></title>
+ 
+ <body>
+ 	<p class="head_links"><a href="https://github.com/koglerjs/threaditjs/tree/master/examples/reduxreact">Source</a> | 
+ 		<a href="http://threaditjs.com">ThreaditJS Home</a>
+ 	</p>
+-	<h2><a href="http://reduxreact.threaditjs.com">ThreaditJS: Redux + React</a></h2>
++	<h2><a href="http://reduxreact.threaditjs.com">ThreaditJS: React</a></h2>
+ 	<div class="main"></div>
+ </body>
+ 

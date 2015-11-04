@@ -13,6 +13,7 @@
 	var ThreaditR = Backbone.Router.extend({
 		initialize : function() {
 			store.bind("threadLoaded", this.setTitle, this);
+			store.bind("homeLoaded", this.setTitle, this);
 			this.setTitle();
 		},
 		routes : {
@@ -27,15 +28,14 @@
 		},
 		setTitle : function(str) {
 			var current = store.getCurrent();
-			console.log(str);
-			if(str) {
+			if(str && typeof str == "string") {
 				$("title").html("ThreaditJS: Backbone | " + str);
 			}
 			else if(current){
 				$("title").html("ThreaditJS: Backbone | " + T.trimTitle(current.get("text")));
 			}
 			else {
-				$("title").html("ThreaditJS: Backbone");
+				$("title").html("ThreaditJS: Backbone | Home");
 			}
 		}
 
@@ -79,6 +79,7 @@
 		//a simple store of all the comments we have, regardless of where we navigate.  
 		loadHome : function() {
 			this.trigger("homeLoading");
+			this.currentId = null;
 
 			$.get(T.apiUrl + "/threads")
 				.then(this.parseHome)

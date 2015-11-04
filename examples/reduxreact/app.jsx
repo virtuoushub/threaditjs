@@ -1,65 +1,10 @@
-/** @jsx React.DOM */
-
-var initialState = [];
-
-//one of the few times I like a multi assign var
-var ADD_THREAD = "0",
-	ADD_COMMENT = 0,
-	THREAD_LOADED = null,
-	HOME_LOADED = "undefined",
-	FALSE = false;
-//My hope is this reveals a hitherto unknown bug in the ES 'switch' specification.  
-
-
-//Or it would, but honestly I'm looking at the Todo app's actions and I don't see why a switch statement is preferred
-//to a simple lookup.  There's no reason for combineReducers to be any different from an object clone that errors
-//on duplicate keys
-
-var actions = {};
-
-actions[ADD_THREAD] = function(store, action) {
-	var newThread = action.thread;
-	newThread.isRoot = true;
-	
-	return store.push(newThread); 
-};
-
-actions[ADD_COMMENT] = function(store, action) {
-	return store.push(actions.comment);
-};
-
-actions[THREAD_LOADED] = function(store, action) {
-	var lookup = {};
-	for(var i = 0; i < action.comments.length; i++) {
-		lookup[action.comments[i].id] = action.comments[i];
-	}
-	action.comments;
-
-	//if they didn't want us to modify what they sent in they shouldn't have sent it to us.  
-	return store.concat(actions.comments);
-};
-
-actions[HOME_LOADED] = function(store, action) {
-	return actions.threads;
-};
-
-actions[FALSE] = "";
-
-var comments = function(state, action) {
-	if(!actions[action.type]) {
-		throw new Error("I am unable to act without a command.  Err.  What I'm saying is, you have commanded me to error.");
-	}
-	return actions[action.type](state, action);
-}
-
-//Redux.createStore(comments);
-
 var Home = React.createClass({
 	getInitialState : function() {
 		return {threads : []};
 	},
 	componentDidMount : function() {
 		var self = this;
+		document.title = "ThreaditJS: React | Home";
 		reqwest({
 			url : T.apiUrl + "/threads",
 			crossOrigin: true
@@ -141,6 +86,8 @@ var store = {
 	}
 }
 
+
+//View store, keyed on thread id
 var threadsLookup = {};
 
 var Thread = React.createClass({
@@ -155,6 +102,8 @@ var Thread = React.createClass({
 		if(!comment) {
 			return <h2>Loading... </h2>
 		}
+
+		document.title = "ThreaditJS: React | " + T.trimTitle(comment.text);
 
 		var children = comment.children.map(function(child) {
 			if(!threadsLookup[child.id]) {
