@@ -10,7 +10,7 @@ Currently, I have:
 * [Ember](http://ember.threaditjs.com)
 * [Angular](http://angular.threaditjs.com)
 * [Mithril](http://mithril.threaditjs.com)
-* [Redux+React](http://reduxreact.threaditjs.com)
+* [React](http://react.threaditjs.com)
 * [Vue](http://vue.threaditjs.com)
 
 The main application shows a list of threads similar to a well known Internet discussion forum.  The user can create a new thread, display a thread's comments, and respond to a specific comment.  
