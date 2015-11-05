@@ -1,0 +1,59 @@
+<!doctype html>
+<body>
+	<h2>GET /threads</h2>
+	<code>
+		{
+			data : [... threads]
+		}
+	</code>
+
+	<p>A thread has an id, text, the count of total children beneath it, an array of children ids</p>
+
+	<h2>GET /comments/:id</h2>
+
+	<code>
+		{
+			data : [... comments]
+		}
+	</code>
+
+	<p>The comments are of the same form as the threads (id, text, etc.), but may also have a parent_id.  Missing parent_id indicates a root comment.</p>
+
+	<h2>POST /threads/create</h2>
+	<p>Parameters (all required): </p>
+	<code>
+		{
+			text : string
+		}
+	</code>
+
+	<p>Returns:</p>
+
+	<code>
+		{
+			data: newly created thread object
+		}
+	</code>
+
+	<h2>POST /comments/create</h2>
+
+	<p>Parameters (all required):</p>
+
+	<code>
+		{
+			text: string,
+			parent: string (id)
+		}
+	</code>
+	<p>Returns: </p>
+	<code>
+		{
+			data: newly created comment
+		}
+	</code>
+
+	<h2>All endpoints randomly fail (500)</h2>
+
+	<p>good luck!</p>
+
+</body>
