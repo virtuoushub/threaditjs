@@ -142,7 +142,7 @@ var thread = {
 			.then(function(obj) {
 				document.title = "ThreaditJS: Mithril | " + T.trimTitle(obj.root.text);
 				return obj;
-			});;
+			});
 		},
 		showReplying : function(event) {
 			this.replying = true;
