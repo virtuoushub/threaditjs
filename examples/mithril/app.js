@@ -1,21 +1,37 @@
+//Basic views
 var header = function() {
-	return [m("p.head_links", [
-			m("a", {href: "https://github.com/koglerjs/threaditjs/tree/master/examples/mithril"}, "Source"),
+	return [
+		m("p.head_links", [
+			m("a", {
+				href: "https://github.com/koglerjs/threaditjs/tree/master/examples/mithril"
+			}, "Source"),
 			" | ", 
-			m("a", {href: "http://threaditjs.com"}, "ThreaditJS Home")]),
-
-			m("h2", 
-				[m("a", {href: "/", config:m.route}, "ThreaditJS: Mithril")]
-			)];
+			m("a", {
+				href: "http://threaditjs.com"
+			}, "ThreaditJS Home")
+		]),
+		m("h2", 
+			[m("a", {
+				href: "/", config:m.route
+			}, "ThreaditJS: Mithril")
+		])
+	];
 };
 
 var newThread = function() {
-	return m("form", {onsubmit: home.vm.newThread}, [
-		m("textarea"),
-		m("input", {type:"submit", value: "Post!"})
-	]);
+	return m("form", {
+			onsubmit: home.vm.newThread
+		}, [
+			m("textarea"),
+			m("input", {
+				type:"submit",
+				value: "Post!"
+			})
+		]
+	);
 };
 
+//Home component
 var home = {
 	controller : function() {
 		home.vm.init();
@@ -24,14 +40,24 @@ var home = {
 		return [
 			header(),
 			m("div.main", 
-				[home.vm.threads().map(function(thread){
-					return [
-						m("p", [m("a", {href : "/thread/" + thread.id, config:m.route}, T.trimTitle(thread.text))]),
-						m("p.comment_count", thread.comment_count + " comment(s)"),
-						m("hr") 
-					];
-				}),
-				newThread()]
+				[
+					home.vm.threads()
+						.map(function(thread){
+							return [
+								m("p", [
+									m("a", {
+										href : "/thread/" + thread.id,
+										config : m.route
+									},
+									T.trimTitle(thread.text))
+								]),
+								m("p.comment_count", thread.comment_count + " comment(s)"),
+								m("hr") 
+							];
+						}
+					),
+					newThread()
+				]
 			)
 		];
 	},
@@ -56,28 +82,34 @@ var home = {
 				newThreads.push(response.data);
 				home.vm.threads(newThreads);
 			});
-			
 		}
 	}
 };
 
 var nodeView = function(node) {
 	var reply;
+	//If the user has clicked 'reply', show the reply form
 	if(node.replying) {
 		reply = m("form", {onsubmit : thread.vm.newComment.bind(node)}, [
 			m("textarea", {
-				value:node.newComment,
+				value : node.newComment,
 				onchange : function(e) {
 					node.newComment = e.currentTarget.value;
 				}
 			}),
-			m("input", {type:"submit", value: "Reply!"})
+			m("input", {
+				type :"submit",
+				value : "Reply!"
+			})
 		]);
 	}
 	else {
-		reply = m("a",{onclick: thread.vm.showReplying.bind(node)}, "Reply!");
+		reply = m("a",{
+			//This makes the node available so we can set the replying flag we just examined
+			onclick: thread.vm.showReplying.bind(node)
+		},
+		"Reply!");
 	}
-
 
 	return m("div.comment", [		
 		m("p", node.text),
@@ -92,6 +124,7 @@ var nodeView = function(node) {
 	]);
 };
 
+//Thread component
 var thread = {
 	controller : function(){
 		thread.vm.init(m.route.param("id"));
@@ -131,13 +164,12 @@ var thread = {
 				self.replying = false;
 				self.children.push(response.data);
 			});
-
 			event.preventDefault();
 		}
 	}
 };
 
-
+//Router
 m.route.mode = "pathname";
 m.route(document.body, "", {
 	"/thread/:id" : thread,

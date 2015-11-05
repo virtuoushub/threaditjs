@@ -12,6 +12,7 @@ var Home = Vue.extend({
 			});
 		}
 	},
+	//You can specify a lot more about the properties, this is closer to a minimum 
 	props: ["threads", "responseText"],
 	methods : {
 		handleSubmit : function() {
@@ -32,8 +33,10 @@ var Home = Vue.extend({
 	}
 });
 
+//Create the filter, now accessible in the views
 Vue.filter("trimThreadTitle", T.trimTitle);
 
+//Comment component.
 var Comment = Vue.component("comment", {
 	template : "#comment",
 	route : {
@@ -73,10 +76,12 @@ var Comment = Vue.component("comment", {
 	}
 });
 
+//Has the router outlet in it
 var Threadit = Vue.extend({
 	template : "#threadit"
 });
 
+//Routing
 var router = new VueRouter({
 	hashbang : false,
 	history: true,
@@ -92,5 +97,4 @@ router.map({
 		component : Comment
 	}
 });
-
 router.start(Threadit, "#app");

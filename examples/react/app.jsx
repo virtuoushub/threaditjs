@@ -68,7 +68,6 @@ var ThreadListItem = React.createClass({
 });
 
 threadsData = {};
-
 var store = {
 	loadThread : function(id) {
 		var promise = reqwest({
@@ -103,6 +102,7 @@ var Thread = React.createClass({
 			return <h2>Loading... </h2>
 		}
 
+		//What a silly place for this.  
 		document.title = "ThreaditJS: React | " + T.trimTitle(comment.text);
 
 		var children = comment.children.map(function(child) {
@@ -158,7 +158,7 @@ var Thread = React.createClass({
 	}
 });
 
-
+//Router and 'Link' component
 var router = new Grapnel({pushState : true});
 
 var Link = React.createClass({

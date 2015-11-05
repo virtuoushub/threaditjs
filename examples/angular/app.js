@@ -1,9 +1,11 @@
+//The definition of the application, and its submodules.
 var threaditApp = angular.module("threaditApp", [
 	"ngRoute",
 	"threaditControllers",
 	"commentServices"
 ]);
 
+//The .when imitation of promise syntax is unique across SPA routers so far as I know.
 threaditApp.config(["$routeProvider", "$locationProvider",
 	function($routeProvider, $locationProvider) {
 		$routeProvider
@@ -19,28 +21,31 @@ threaditApp.config(["$routeProvider", "$locationProvider",
 				redirectTo: "/"
 			});
 
+			//No more # in the url
 			$locationProvider.html5Mode(true);
 	}
 ]);
 
-
+//The last time I had touched Angular, it relied on controllers being global functions.  
+//Now they're registered with angular.module calls.  Much improved.  
 var threaditControllers = angular.module("threaditControllers", []);
 
 threaditControllers.controller("ThreadListCtrl", ["$scope", "Home", 
 	function($scope, Home) {
-		$scope.threads = Home.query();
-		$scope.trimTitle = function(str) {
-			if(str.length>120) {
-				return str.substr(0, 120) + "...";
-			}
-			return str;
-		};
 
+		//Link to the resource.  
+		$scope.threads = Home.query();
+
+		//This makes the helper accessible in the template
+		$scope.trimTitle = T.trimTitle;
+
+		//The handler for the submit event
 		$scope.create = function(post) {
 			var request = Home.save({text: post.text});
 
+			//Access the resolution of the async call
 			request.$promise.then(function(data){
-				$scope.newpost.text = "";
+				$scope.newpost.text = "";//reset the form to an empty state
 				$scope.threads.push(data.data);
 			});
 		};
@@ -51,12 +56,15 @@ threaditControllers.controller("CommentsCtrl", ["$scope", "$routeParams", "Comme
 	function($scope, $routeParams, Comment) {
 		$scope.comment = Comment.query({id: $routeParams.id});
 
+		//Handle submit event  
+		//This time, note that the template is passing the actual object being responded to.  
 		$scope.createResponseOn = function(node) {
 			var request=Comment.save({
 				parent: node.id,
 				text: node.reply_text
 			});
-
+			
+			//This is an unclean hack if you ask me.   
 			request.$promise.then(function(data) {
 				node.reply_text = "";
 				node.replying = false;
@@ -64,31 +72,33 @@ threaditControllers.controller("CommentsCtrl", ["$scope", "$routeParams", "Comme
 			});
 		};
 
+		//Convenience function for above.  
 		$scope.addComment = function(comment) {
-			$scope.comment.nodes[comment.parent_id].children.push(comment);
-			$scope.comment.nodes[comment.id] = comment;
+			$scope.comment.lookup[comment.parent_id].children.push(comment);
+			$scope.comment.lookup[comment.id] = comment;
 		};
 	}
 ]);
 
-var apiUrl = T.apiUrl + "/";
 var commentServices = angular.module("commentServices", ["ngResource"]);
 
+//For all the jokes about what a resource, a factory, and a service is, Angular allowed me to
+// accomplish the configuration of my API so succintly
+//that I'm still really confused why I ever bothered with Ember Data.  
 commentServices.factory("Home", ["$resource", 
 	function($resource) {
-		return $resource(apiUrl + "threads",
-			{},
+		return $resource(T.apiUrl + "/threads",
+			{},//defaults
 			{
 				query: {
 					isArray: true,
-				transformResponse : function(data) {
-					data = angular.fromJson(data);
-
-					return data.data;
+					transformResponse : function(data) {
+						data = angular.fromJson(data);
+						return data.data;
 					}
 				},
 				save : {
-					url : apiUrl + "threads/create",
+					url : T.apiUrl + "/threads/create",
 					method: "POST"
 				}
 			}
@@ -96,21 +106,22 @@ commentServices.factory("Home", ["$resource",
 	}
 ]);
 
-
 commentServices.factory("Comment", ["$resource",
 	function($resource) {
-		return $resource(apiUrl + "comments/:id",
+		return $resource(T.apiUrl + "/comments/:id",
 			{},
 			{
 				query: {
 					isArray: false,
 					transformResponse : function(response) {
 						comments = T.transformResponse(angular.fromJson(response));
-						return {nodes: comments.lookup, tree: [comments.root]};
+						//Makes the root node look omre like a 'children' array
+						comments.root = [comments.root];
+						return comments;
 					}
 				},
 				save : {
-					url : apiUrl + "comments/create",
+					url : T.apiUrl + "/comments/create",
 					method: "POST"
 				}
 			}
