@@ -14,19 +14,14 @@ var Home = React.createClass({
 		});
 	},
 	render : function() {
-		var arr = [];
-
 		if(this.state.threads.length == 0) {
 			return <h2>Loading...</h2>
 		}
-		
-		this.state.threads.forEach(function(thread){
-			arr.push(<ThreadListItem key={thread.id} {...thread}/>);
-		});
-		
 
 		return (<div className="thread_list">
-			{arr}
+			{this.state.threads.map(function(thread){
+				return <ThreadListItem key={thread.id} {...thread}/>;
+			})}
 			<form onSubmit={this.handleSubmit}>
 				<textarea ref="text"></textarea>
 				<input type="submit" value="Post!"/>
