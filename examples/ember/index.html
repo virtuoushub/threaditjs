@@ -21,7 +21,7 @@
 	{{/each}}
 
 	<form {{action 'newThread' on='submit'}}>
-		{{textarea name="text" value=model.newText}}
+		{{textarea name="text" value=newText}}
 		<input type="submit" value="Post!"/>
 	</form>
 </script>
@@ -39,16 +39,16 @@
 </script>
 
 <script type="text/x-handlebars" data-template-name="thread">
-	{{render "thread_item" model.root}}
+	{{thread-item model=model.root}}
 </script>
 
-<script type="text/x-handlebars" data-template-name="thread_item">
-	<p>{{ model.text }} </p>
+<script type="text/x-handlebars" data-template-name="components/thread-item">
+	<p>{{trim model.text}}</p>
 
 	<div class="reply">
-		{{#if model.replying}}
+		{{#if isReplying}}
 			<form {{action 'newComment' model on='submit'}}>
-				{{textarea name="text" value=model.newText}}	
+				{{textarea name="text" value=newText}}	
 				<input type="submit" value="Reply!"/>
 			</form>
 		{{else}}
@@ -58,7 +58,7 @@
 
 	<div class="children">
 		{{#each model.children as |child|}}
-			{{render "thread_item" child}}
+			{{thread-item model=child}}
 		{{/each}}
 	</div>
 </script>
