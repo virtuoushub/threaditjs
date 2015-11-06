@@ -4,7 +4,7 @@ It's harder than ever to keep track of Javascript tools  As our ideas as to how 
 
 This is an attempt at a newer tool for side-by-side comparison of SPA technologies.  
 
-* [Threaditjs.com](http://threaditjs.com)
+[Main site.](http://threaditjs.com)
 
 ##General idea
 
@@ -66,11 +66,11 @@ You should include http://threaditjs.com/shared.css.  You should also have a col
 
 ###favicon
 
-I liked having a different color favicon perimplementatoin, too.  The favicon.xcf contains the image I used to generate the favicons for the current implementations.  
+I liked having a different color favicon per implementatoin, too.  The favicon.xcf contains the image I used to generate the favicons for the current implementations.  
 
 ###Niceties checklist.
 
-In addition to showing the threads, showing comment trees, allowing the user to create threads and comment trees, I'll be looking to see how your solution accomplishes or doesn't accomplish the following:
+In addition to showing the threads, showing comment trees, allowing the user to create threads and comments, I'll be looking to see how your solution accomplishes or doesn't accomplish the following:
 
 * Handling document.title
 * Handling 404s from the API
