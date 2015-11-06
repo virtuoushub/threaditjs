@@ -66,7 +66,7 @@ You should include http://threaditjs.com/shared.css.  You should also have a col
 
 ###favicon
 
-I liked having a different color favicon per implementatoin, too.  The favicon.xcf contains the image I used to generate the favicons for the current implementations.  
+I liked having a different color favicon per implementation, too.  The favicon.xcf contains the image I used to generate the favicons for the current implementations.  
 
 ###Niceties checklist.
 
