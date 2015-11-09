@@ -1,7 +1,5 @@
 # ThreaditJS
 
-It's harder than ever to keep track of Javascript tools  As our ideas as to how to structure strong client web apps have changed, so too must our means of evaluating them.  
-
 This is an attempt at a newer tool for side-by-side comparison of SPA technologies.  
 
 [Main site.](http://threaditjs.com)
@@ -26,13 +24,13 @@ Provides a list of all descendants of the comment with the given id.  (Threads a
 
 * /threads/create
 
-POST an object to create a new thread.
+POST an object to create a new thread.  The text will be sanitized and passed through a Markdown library.  
 
     { text : "vote up if you violate intergalactic law" }
 
 * /comments/create
 
-POST an object to respond to another comment or thread; you need text and the id of the object to which you're responding.  
+POST an object to respond to another comment or thread; you need text and the id of the object to which you're responding.  The text will be sanitized and passed through a Markdown library.  
 
     { parent: "abcxyz", text : "this." }
 

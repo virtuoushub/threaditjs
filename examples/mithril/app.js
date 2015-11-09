@@ -31,6 +31,11 @@ var newThread = function() {
 	);
 };
 
+var comment = {
+	create : function(id, text) {
+	}
+}
+
 //Home component
 var home = {
 	controller : function() {
@@ -49,7 +54,7 @@ var home = {
 										href : "/thread/" + thread.id,
 										config : m.route
 									},
-									T.trimTitle(thread.text))
+									m.trust(T.trimTitle(thread.text)))
 								]),
 								m("p.comment_count", thread.comment_count + " comment(s)"),
 								m("hr") 
@@ -93,14 +98,15 @@ var nodeView = function(node) {
 		reply = m("form", {onsubmit : thread.vm.newComment.bind(node)}, [
 			m("textarea", {
 				value : node.newComment,
-				onchange : function(e) {
+				oninput : function(e) {
 					node.newComment = e.currentTarget.value;
 				}
 			}),
 			m("input", {
 				type :"submit",
 				value : "Reply!"
-			})
+			}),
+			m("div.preview", m.trust(T.previewComment(node.newComment)))
 		]);
 	}
 	else {
@@ -112,7 +118,7 @@ var nodeView = function(node) {
 	}
 
 	return m("div.comment", [		
-		m("p", node.text),
+		m("p", m.trust(node.text)),
 		m("div.reply", [reply]),
 		m("div.children", [
 			node.children.map(

@@ -3,7 +3,7 @@
 <link rel="stylesheet" href="http://threaditjs.com/shared.css"/>
 <link rel="stylesheet" href="/colors.css"/>
 <title>ThreaditJS: Ember</title>
-<script src="http://local.threaditjs.com/shared.js"></script>
+<script src="http://threaditjs.com/shared.js"></script>
 
 <script type="text/x-handlebars" data-template-name="application">
 	<p class="head_links"><a href="https://github.com/koglerjs/threaditjs/tree/master/examples/ember">Source</a> | 
@@ -15,7 +15,7 @@
 
 <script type="text/x-handlebars" data-template-name="index">
 	{{#each model.threads as |thread|}}
-		<p class="thread_title">{{#link-to "thread" thread.id}}  {{thread.text}}{{/link-to}}</p>
+		<p class="thread_title">{{#link-to "thread" thread.id}}  {{trim thread.text}}{{/link-to}}</p>
 		<p class="comment_count">{{thread.comment_count}} comment(s)</p>
 		<hr/>
 	{{/each}}
@@ -43,7 +43,7 @@
 </script>
 
 <script type="text/x-handlebars" data-template-name="components/thread-item">
-	<p>{{trim model.text}}</p>
+	<p>{{model.text}}</p>
 
 	<div class="reply">
 		{{#if isReplying}}
