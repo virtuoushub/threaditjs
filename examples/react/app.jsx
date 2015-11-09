@@ -108,7 +108,7 @@ var Thread = React.createClass({
 		});
 		return (
 			<div className="comment">
-				<p>{comment.text}</p>
+				<p dangerouslySetInnerHTML={{__html: comment.text}}></p>
 				<div className="reply">
 					{
 						!this.state.replying ? 
@@ -158,7 +158,8 @@ var router = new Grapnel({pushState : true});
 
 var Link = React.createClass({
 	render : function() {
-		return <a onClick={this.navigate} {...this.props}/>
+		//the href allows those mobile browsers that aren't getting onclick events to at least see threads.
+		return <a href={this.props.to} onClick={this.navigate} {...this.props}/>
 	},
 	navigate : function(event) {
 		event.preventDefault();

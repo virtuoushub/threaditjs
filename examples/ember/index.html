@@ -50,6 +50,7 @@
 			<form {{action 'newComment' model on='submit'}}>
 				{{textarea name="text" value=newText}}	
 				<input type="submit" value="Reply!"/>
+				<div class="preview">{{marked newText}}</div>
 			</form>
 		{{else}}
 			<a {{action 'showReply' model on='click'}}>Reply</a>

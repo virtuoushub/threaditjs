@@ -33,8 +33,9 @@ var Home = Vue.extend({
 	}
 });
 
-//Create the filter, now accessible in the views
+//Create filters, now accessible in the views
 Vue.filter("trimThreadTitle", T.trimTitle);
+Vue.filter("preview", T.previewComment);
 
 //Comment component.
 var Comment = Vue.component("comment", {

@@ -1,0 +1,205 @@
+diff --git a/examples/angular/app.js b/examples/angular/app.js
+index 17578ae..70d9c6f 100644
+--- a/examples/angular/app.js
++++ b/examples/angular/app.js
+@@ -30,7 +30,7 @@ threaditApp.config(["$routeProvider", "$locationProvider",
+ //Now they're registered with angular.module calls.  Much improved.  
+ var threaditControllers = angular.module("threaditControllers", []);
+ 
+-threaditControllers.controller("ThreadListCtrl", ["$scope", "Home", 
++threaditControllers.controller("ThreadListCtrl", ["$scope", "Home",
+ 	function($scope, Home) {
+ 
+ 		//Link to the resource.  
+@@ -52,10 +52,19 @@ threaditControllers.controller("ThreadListCtrl", ["$scope", "Home",
+ 	}
+ ]);
+ 
++threaditApp.filter("trust", ["$sce", function($sce) {
++	return function(html) {
++		return $sce.trustAsHtml(html);
++	}
++}]);
++
+ threaditControllers.controller("CommentsCtrl", ["$scope", "$routeParams", "Comment", 
+ 	function($scope, $routeParams, Comment) {
+ 		$scope.comment = Comment.query({id: $routeParams.id});
+ 
++		$scope.previewComment = T.previewComment;
++
++
+ 		//Handle submit event  
+ 		//This time, note that the template is passing the actual object being responded to.  
+ 		$scope.createResponseOn = function(node) {
+diff --git a/examples/angular/comment-node.html b/examples/angular/comment-node.html
+index 862704a..d701a22 100644
+--- a/examples/angular/comment-node.html
++++ b/examples/angular/comment-node.html
+@@ -1,10 +1,11 @@
+-<p>{{node.text}}</p>
++<p ng-bind-html="node.text | trust"/>
+ 
+ <div class="reply">
+ 	<a ng-hide="node.replying" ng-click="node.replying=true" href="javascript:void(0)">Reply</a>
+ 
+ 	<textarea ng-show="node.replying" ng-model="node.reply_text"></textarea>
+ 	<input ng-show="node.replying" type="submit" ng-click="$parent.createResponseOn(node)" value="Post!"/>
++	<div class="preview" ng-bind-html="previewComment(node.reply_text) | trust"></div>
+ </div>
+ 
+ <div class="children">
+diff --git a/examples/angular/thread-list.html b/examples/angular/thread-list.html
+index 0586c1a..371c7c3 100644
+--- a/examples/angular/thread-list.html
++++ b/examples/angular/thread-list.html
+@@ -5,6 +5,6 @@
+ 	<hr/>
+ </div>
+ 	
+-		<textarea ng-model="newpost.text"></textarea>
+-		<input type="submit" ng-click="create(newpost)" value="Post!"/>
++	<textarea ng-model="newpost.text"></textarea>
++	<input type="submit" ng-click="create(newpost)" value="Post!"/>
+ 	
+\ No newline at end of file
+diff --git a/examples/backbone/app.js b/examples/backbone/app.js
+index e9f930c..608248a 100644
+--- a/examples/backbone/app.js
++++ b/examples/backbone/app.js
+@@ -322,7 +322,8 @@
+ 		className : "comment",
+ 		events : {
+ 			"click .reply a" : "showReply",
+-			"submit" : "handleReply"
++			"submit" : "handleReply",
++			"keyup textarea" : "showPreview" 
+ 		},
+ 		subviews : {}, //It's not immediately obvious but this view store is shared by all copies of this class
+ 		format : function(obj) {
+@@ -362,7 +363,13 @@
+ 			store.createComment(id, text);
+ 
+ 			return false;
+-		}
++		},
++		showPreview : _.throttle(function(ev) {
++			var text = this.$el.find("textarea").val();
++			this.$el.find(".preview").first().html(
++				T.previewComment(text)
++			);
++		},160)
+ 
+ 	});
+ 
+diff --git a/examples/backbone/index.html b/examples/backbone/index.html
+index 61c7e01..ae23054 100644
+--- a/examples/backbone/index.html
++++ b/examples/backbone/index.html
+@@ -43,6 +43,7 @@
+ 	<form>
+ 		<textarea></textarea>
+ 		<input type="submit" value="Reply!"/>
++		<div class="preview"></div>
+ 	</form>
+ </script>
+ 
+diff --git a/examples/ember/app.js b/examples/ember/app.js
+index a1eb4a3..7ae8ff5 100644
+--- a/examples/ember/app.js
++++ b/examples/ember/app.js
+@@ -41,6 +41,11 @@ threadit.TrimHelper = Ember.Helper.helper(function(params) {
+ 	return T.trimTitle(params[0]);
+ });
+ 
++threadit.MarkedHelper = Ember.Helper.helper(function(params) {
++	var str = params[0] || "";
++	return new Ember.Handlebars.SafeString(T.previewComment(str));
++});
++
+ threadit.IndexRoute = Ember.Route.extend({
+ 	api : Ember.inject.service(),
+ 	model : function() {
+diff --git a/examples/ember/index.html b/examples/ember/index.html
+index 2f890e1..a0fcbfa 100644
+--- a/examples/ember/index.html
++++ b/examples/ember/index.html
+@@ -50,6 +50,7 @@
+ 			<form {{action 'newComment' model on='submit'}}>
+ 				{{textarea name="text" value=newText}}	
+ 				<input type="submit" value="Reply!"/>
++				<div class="preview">{{marked newText}}</div>
+ 			</form>
+ 		{{else}}
+ 			<a {{action 'showReply' model on='click'}}>Reply</a>
+diff --git a/examples/react/app.jsx b/examples/react/app.jsx
+index 95e8363..8521ab2 100644
+--- a/examples/react/app.jsx
++++ b/examples/react/app.jsx
+@@ -108,7 +108,7 @@ var Thread = React.createClass({
+ 		});
+ 		return (
+ 			<div className="comment">
+-				<p>{comment.text}</p>
++				<p dangerouslySetInnerHTML={{__html: comment.text}}></p>
+ 				<div className="reply">
+ 					{
+ 						!this.state.replying ? 
+@@ -158,7 +158,8 @@ var router = new Grapnel({pushState : true});
+ 
+ var Link = React.createClass({
+ 	render : function() {
+-		return <a onClick={this.navigate} {...this.props}/>
++		//the href allows those mobile browsers that aren't getting onclick events to at least see threads.
++		return <a href={this.props.to} onClick={this.navigate} {...this.props}/>
+ 	},
+ 	navigate : function(event) {
+ 		event.preventDefault();
+diff --git a/examples/vue/app.js b/examples/vue/app.js
+index bd307bf..e0e8eb5 100644
+--- a/examples/vue/app.js
++++ b/examples/vue/app.js
+@@ -33,8 +33,9 @@ var Home = Vue.extend({
+ 	}
+ });
+ 
+-//Create the filter, now accessible in the views
++//Create filters, now accessible in the views
+ Vue.filter("trimThreadTitle", T.trimTitle);
++Vue.filter("preview", T.previewComment);
+ 
+ //Comment component.
+ var Comment = Vue.component("comment", {
+diff --git a/examples/vue/index.html b/examples/vue/index.html
+index f65d75d..3d7d7f0 100644
+--- a/examples/vue/index.html
++++ b/examples/vue/index.html
+@@ -43,13 +43,14 @@
+ <script type="text/x-template" id="comment">
+ 	<div v-if="$loadingRouteData">Loading...</div>
+ 	<div v-if="!$loadingRouteData">
+-		<p>{{ text }}</p>
++		<p v-html="text"></p>
+ 
+ 		<div class="reply">
+ 			<a v-if="!replying" v-on:click="startReplying" href="javascript:void(0)">Reply</a>
+ 			<form v-if="replying" v-on:submit.prevent="handleSubmit">
+ 				<textarea v-model="responseText"></textarea>
+ 				<input type="submit" value="Reply!"/>
++				<div class="preview" v-html="responseText | preview"></div>
+ 			</form>
+ 		</div>
+ 
+diff --git a/site/shared.js b/site/shared.js
+index ae650db..c7da931 100644
+--- a/site/shared.js
++++ b/site/shared.js
+@@ -1340,6 +1340,9 @@ if (typeof module !== 'undefined' && typeof exports === 'object') {
+ 
+ 		},
+ 		previewComment : function(str) {
++			if(!str) {
++				str = "";
++			}
+ 			return marked(str, {
+ 				sanitize: true
+ 			});

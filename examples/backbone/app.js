@@ -322,7 +322,8 @@
 		className : "comment",
 		events : {
 			"click .reply a" : "showReply",
-			"submit" : "handleReply"
+			"submit" : "handleReply",
+			"keyup textarea" : "showPreview" 
 		},
 		subviews : {}, //It's not immediately obvious but this view store is shared by all copies of this class
 		format : function(obj) {
@@ -362,7 +363,13 @@
 			store.createComment(id, text);
 
 			return false;
-		}
+		},
+		showPreview : _.throttle(function(ev) {
+			var text = this.$el.find("textarea").val();
+			this.$el.find(".preview").first().html(
+				T.previewComment(text)
+			);
+		},160)
 
 	});
 

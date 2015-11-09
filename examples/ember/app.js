@@ -41,6 +41,11 @@ threadit.TrimHelper = Ember.Helper.helper(function(params) {
 	return T.trimTitle(params[0]);
 });
 
+threadit.MarkedHelper = Ember.Helper.helper(function(params) {
+	var str = params[0] || "";
+	return new Ember.Handlebars.SafeString(T.previewComment(str));
+});
+
 threadit.IndexRoute = Ember.Route.extend({
 	api : Ember.inject.service(),
 	model : function() {

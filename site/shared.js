@@ -1291,7 +1291,7 @@ if (typeof module !== 'undefined' && typeof exports === 'object') {
 
 (function() {
 	var titleTrimLength = 120;
-	var apiRoot = "http://api.local.threaditjs.com";
+	var apiRoot = "http://api.threaditjs.com";
 	var exports = {
 		trimTitle : function(str, optionalLength) {
 			//Todo: evaluate performance of this approach, consider making this list more comprehensive.  
@@ -1340,6 +1340,9 @@ if (typeof module !== 'undefined' && typeof exports === 'object') {
 
 		},
 		previewComment : function(str) {
+			if(!str) {
+				str = "";
+			}
 			return marked(str, {
 				sanitize: true
 			});

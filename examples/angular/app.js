@@ -30,7 +30,7 @@ threaditApp.config(["$routeProvider", "$locationProvider",
 //Now they're registered with angular.module calls.  Much improved.  
 var threaditControllers = angular.module("threaditControllers", []);
 
-threaditControllers.controller("ThreadListCtrl", ["$scope", "Home", 
+threaditControllers.controller("ThreadListCtrl", ["$scope", "Home",
 	function($scope, Home) {
 
 		//Link to the resource.  
@@ -52,9 +52,18 @@ threaditControllers.controller("ThreadListCtrl", ["$scope", "Home",
 	}
 ]);
 
+threaditApp.filter("trust", ["$sce", function($sce) {
+	return function(html) {
+		return $sce.trustAsHtml(html);
+	}
+}]);
+
 threaditControllers.controller("CommentsCtrl", ["$scope", "$routeParams", "Comment", 
 	function($scope, $routeParams, Comment) {
 		$scope.comment = Comment.query({id: $routeParams.id});
+
+		$scope.previewComment = T.previewComment;
+
 
 		//Handle submit event  
 		//This time, note that the template is passing the actual object being responded to.  
