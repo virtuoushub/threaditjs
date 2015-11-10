@@ -77,7 +77,7 @@ In addition to showing the threads, showing comment trees, allowing the user to 
 * Trimming the title
 * Pluralizing the comment count text (0 comments, 1 comment, n comments)
 
-Note that not every current implementation is successfu in all of these things; for instance, only Angular made pluralization easy.  
+Note that not every current implementation is successful in all of these things; for instance, only Angular made pluralization easy.  
 
 ###Development 
 
