@@ -1356,16 +1356,16 @@ if (typeof module !== 'undefined' && typeof exports === 'object') {
 	}
 
 
-	if(!console.time) {
+	if(typeof console.time!== "function") {
 		timers = {};
 		console.time = function(str) {
 			timers[str] = Date.now();
 			console.log(str + ": started.");
 		};
-		console.timeOut = function(str) {
+		console.timeEnd = function(str) {
 			if(!timers[str]) return;
 
-			console.log(str + ": " + Date.now() - timers[str] + "ms");
+			console.log(str + ": " + (Date.now() - timers[str]) + "ms");
 
 			timers[str] = undefined;
 		};
