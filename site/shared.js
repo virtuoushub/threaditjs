@@ -1288,7 +1288,6 @@ if (typeof module !== 'undefined' && typeof exports === 'object') {
 }());
 
 
-
 (function() {
 	var titleTrimLength = 120;
 	var apiRoot = "http://api.threaditjs.com";
@@ -1356,4 +1355,19 @@ if (typeof module !== 'undefined' && typeof exports === 'object') {
 		module.exports = exports;
 	}
 
+
+	if(!console.time) {
+		timers = {};
+		console.time = function(str) {
+			timers[str] = Date.now();
+			console.log(str + ": started.");
+		};
+		console.timeOut = function(str) {
+			if(!timers[str]) return;
+
+			console.log(str + ": " + Date.now() - timers[str] + "ms");
+
+			timers[str] = undefined;
+		};
+	}
 })();
