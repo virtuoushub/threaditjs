@@ -1,3 +1,4 @@
+console.time("Setup");
 //The definition of the application, and its submodules.
 var threaditApp = angular.module("threaditApp", [
 	"ngRoute",
@@ -32,6 +33,8 @@ var threaditControllers = angular.module("threaditControllers", []);
 
 threaditControllers.controller("ThreadListCtrl", ["$scope", "Home",
 	function($scope, Home) {
+		//We're about to initialize the first query.  
+		console.timeEnd("Setup");
 
 		//Link to the resource.  
 		$scope.threads = Home.query();
@@ -58,12 +61,11 @@ threaditApp.filter("trust", ["$sce", function($sce) {
 	}
 }]);
 
-threaditControllers.controller("CommentsCtrl", ["$scope", "$routeParams", "Comment", 
+threaditControllers.controller("CommentsCtrl", ["$scope", "$routeParams", "Comment",
 	function($scope, $routeParams, Comment) {
 		$scope.comment = Comment.query({id: $routeParams.id});
 
 		$scope.previewComment = T.previewComment;
-
 
 		//Handle submit event  
 		//This time, note that the template is passing the actual object being responded to.  
@@ -124,7 +126,7 @@ commentServices.factory("Comment", ["$resource",
 					isArray: false,
 					transformResponse : function(response) {
 						comments = T.transformResponse(angular.fromJson(response));
-						//Makes the root node look omre like a 'children' array
+						//Makes the root node look more like a 'children' array
 						comments.root = [comments.root];
 						return comments;
 					}

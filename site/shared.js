@@ -1336,9 +1336,6 @@ if (typeof module !== 'undefined' && typeof exports === 'object') {
 			}
 			return {root : root, lookup : lookup};
 		},
-		mark : function(str) {
-
-		},
 		previewComment : function(str) {
 			if(!str) {
 				str = "";

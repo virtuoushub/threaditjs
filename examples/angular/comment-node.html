@@ -2,7 +2,6 @@
 
 <div class="reply">
 	<a ng-hide="node.replying" ng-click="node.replying=true" href="javascript:void(0)">Reply</a>
-
 	<textarea ng-show="node.replying" ng-model="node.reply_text"></textarea>
 	<input ng-show="node.replying" type="submit" ng-click="$parent.createResponseOn(node)" value="Post!"/>
 	<div class="preview" ng-bind-html="previewComment(node.reply_text) | trust"></div>
