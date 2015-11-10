@@ -1,4 +1,4 @@
-console.time("Setup");
+T.time("Setup");
 
 var Home = React.createClass({
 	getInitialState : function() {
@@ -7,7 +7,7 @@ var Home = React.createClass({
 	componentDidMount : function() {
 		var self = this;
 		document.title = "ThreaditJS: React | Home";
-		console.timeEnd("Setup");
+		T.timeEnd("Setup");
 		reqwest({
 			url : T.apiUrl + "/threads",
 			crossOrigin: true

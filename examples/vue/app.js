@@ -1,10 +1,11 @@
-console.time("Setup");
+T.time("Setup");
 
+T.apiUrl = "http://api.local.threaditjs.com";
 var Home = Vue.extend({
 	template : "#thread_list",
 	route : {
 		data : function() {
-			console.timeEnd("Setup");
+			T.timeEnd("Setup");
 			return 	reqwest({
 				url : T.apiUrl + "/threads",
 				crossOrigin: true
@@ -53,9 +54,9 @@ var Comment = Vue.component("comment", {
 				document.title = "ThreaditJS: Vue | " + T.trimTitle(response.data[0].text);
 				//We want to avoid the linking of the response contributing to the render time
 				var rtrn =  T.transformResponse(response).root;
-				console.time("Thread render");
+				T.time("Thread render");
 				Vue.nextTick(function() {
-					console.timeEnd("Thread render");
+					T.timeEnd("Thread render");
 				});
 				return rtrn;
 			});

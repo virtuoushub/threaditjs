@@ -1,4 +1,4 @@
-console.time("Setup");
+T.time("Setup");
 //The definition of the application, and its submodules.
 var threaditApp = angular.module("threaditApp", [
 	"ngRoute",
@@ -34,7 +34,7 @@ var threaditControllers = angular.module("threaditControllers", []);
 threaditControllers.controller("ThreadListCtrl", ["$scope", "Home",
 	function($scope, Home) {
 		//We're about to initialize the first query.  
-		console.timeEnd("Setup");
+		T.timeEnd("Setup");
 
 		//Link to the resource.  
 		$scope.threads = Home.query();

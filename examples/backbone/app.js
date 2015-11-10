@@ -7,7 +7,7 @@
 //Still, I thought it sensible to present what I consider to be classical Backbone style as a starting point.  
 
 //Time to first ajax call
-console.time("Setup");
+T.time("Setup");
 
 (function() {
 
@@ -81,7 +81,7 @@ console.time("Setup");
 		//We eschew the Collection fetch/parse methods entirely for clarity and to make the Collection
 		//a simple store of all the comments we have, regardless of where we navigate.  
 		loadHome : function() {
-			console.timeEnd("Setup");
+			T.timeEnd("Setup");
 			this.trigger("homeLoading");
 			this.currentId = null;
 
@@ -109,9 +109,9 @@ console.time("Setup");
 			}
 
 			//Backbone's events are synchronous.
-			console.time("Thread render");
+			T.time("Thread render");
 			this.trigger("threadLoaded");
-			console.timeEnd("Thread render");
+			T.timeEnd("Thread render");
 		},
 		createComment: function(id, text) {
 			$.post(T.apiUrl + "/comments/create", {

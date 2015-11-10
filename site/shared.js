@@ -1289,6 +1289,7 @@ if (typeof module !== 'undefined' && typeof exports === 'object') {
 
 
 (function() {
+	var timers = {};
 	var titleTrimLength = 120;
 	var apiRoot = "http://api.threaditjs.com";
 	var exports = {
@@ -1343,6 +1344,20 @@ if (typeof module !== 'undefined' && typeof exports === 'object') {
 				sanitize: true
 			});
 		},
+		//turns out that there isn't really a way to tell if console.time is available
+		//Android stock browser acts like it's a function but doesn't print anything to its console.  
+		//So we're just going to use this one for the most part.  
+		time : function(str) {
+			timers[str] = Date.now();
+			console.log(str + ": started.");
+		},
+		timeEnd : function(str) {
+			if(!timers[str]) return;
+
+			console.log(str + ": " + (Date.now() - timers[str]) + "ms");
+
+			timers[str] = undefined;
+		}
 		apiUrl : apiRoot,
 		apiUrlSlash : apiRoot + "/"
 	};
@@ -1353,21 +1368,5 @@ if (typeof module !== 'undefined' && typeof exports === 'object') {
 	}
 	else {
 		module.exports = exports;
-	}
-
-
-	if(typeof console.time!== "function") {
-		timers = {};
-		console.time = function(str) {
-			timers[str] = Date.now();
-			console.log(str + ": started.");
-		};
-		console.timeEnd = function(str) {
-			if(!timers[str]) return;
-
-			console.log(str + ": " + (Date.now() - timers[str]) + "ms");
-
-			timers[str] = undefined;
-		};
 	}
 })();

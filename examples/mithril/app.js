@@ -1,4 +1,4 @@
-console.time("Setup");
+T.time("Setup");
 
 //Basic views
 var header = function() {
@@ -70,7 +70,7 @@ var home = {
 	},
 	vm : {
 		init : function() {
-			console.timeEnd("Setup");
+			T.timeEnd("Setup");
 			home.vm.threads = m.request({method : "GET", url : T.apiUrl + "/threads"})
 				.then(function(response) {
 					document.title = "ThreaditJS: Mithril | Home";
@@ -139,12 +139,12 @@ var thread = {
 		thread.vm.init(m.route.param("id"));
 	},
 	view : function(node) {
-		console.time("Thread render");
+		T.time("Thread render");
 		node = thread.vm.thread().root;
 		return [header(), 
 				m("div.main", {
 					config : function() {
-						console.timeEnd("Thread render");
+						T.timeEnd("Thread render");
 					}
 				}, nodeView(node))];
 	},

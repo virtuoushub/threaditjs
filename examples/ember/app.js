@@ -1,4 +1,4 @@
-console.time("Setup");
+T.time("Setup");
 
 var threadit = Ember.Application.create();
 
@@ -24,7 +24,7 @@ function ajax(method, url, data) {
 
 threadit.ApiService = Ember.Service.extend({
 	fetchThreads : function() {
-		console.timeEnd("Setup");
+		T.timeEnd("Setup");
 		return ajax('GET', T.apiUrl + "/threads/");
 	},
 	createThread : function(newText) {
@@ -91,11 +91,11 @@ threadit.ThreadRoute = Ember.Route.extend({
 			.then(T.transformResponse);
 	},
 	afterModel : function(model) {
-		console.time("Thread render");
+		T.time("Thread render");
 		//It seems to be a safe assumption that Ember doesn't give up controlf the thread until after rendering.
 		//In any case, I'm not sure where else to attempt to capture the end of the render.  
 		setTimeout(function() {
-			console.timeEnd("Thread render")
+			T.timeEnd("Thread render")
 		}, 0);
 		document.title = "ThreaditJS: Ember | " + T.trimTitle(model.root.text, 80);
 	}
