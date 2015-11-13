@@ -1,6 +1,5 @@
 T.time("Setup");
 
-T.apiUrl = "http://api.local.threaditjs.com";
 var Home = Vue.extend({
 	template : "#thread_list",
 	route : {
