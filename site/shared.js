@@ -1357,7 +1357,7 @@ if (typeof module !== 'undefined' && typeof exports === 'object') {
 			console.log(str + ": " + (Date.now() - timers[str]) + "ms");
 
 			timers[str] = undefined;
-		}
+		},
 		apiUrl : apiRoot,
 		apiUrlSlash : apiRoot + "/"
 	};
