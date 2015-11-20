@@ -1,6 +1,5 @@
 T.time("Setup");
 
-T.apiUrl = "http://api.local.threaditjs.com";
 //API calls
 var api = {
 	home : function() {
