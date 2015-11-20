@@ -1,6 +1,42 @@
 T.time("Setup");
 
-//Basic views
+T.apiUrl = "http://api.local.threaditjs.com";
+//API calls
+var api = {
+	home : function() {
+		T.timeEnd("Setup");
+		return m.request({
+			method : "GET",
+			url : T.apiUrl + "/threads/"
+		});
+	}, 
+	thread : function(id) {
+		T.timeEnd("Setup");
+		return m.request({
+			method : "GET",
+			url : T.apiUrl + "/comments/" + id
+		}).then(T.transformResponse)
+	},
+	newThread : function(text) {
+		return m.request({
+			method: "POST", 
+			url : T.apiUrl + "/threads/create",
+			data : { text: text }
+		})
+	},
+	newComment : function(text, id) {
+		return m.request({
+			url : T.apiUrl + "/comments/create", 
+			method : "POST",
+			data : {
+				text : text,
+				parent : id
+			}
+		})
+	}
+}
+
+//Shared Views
 var header = function() {
 	return [
 		m("p.head_links", [
@@ -20,11 +56,18 @@ var header = function() {
 	];
 };
 
-var newThread = function() {
+//HOME COMPONENT
+// Views
+var newThread = function(ctrl) {
 	return m("form", {
-			onsubmit: home.vm.newThread
+			onsubmit: ctrl.newThread
 		}, [
-			m("textarea"),
+			m("textarea", {
+				value : ctrl.newText,
+				oninput : function(e) {
+					ctrl.newText = e.currentTarget.value;
+				}
+			}),
 			m("input", {
 				type:"submit",
 				value: "Post!"
@@ -33,154 +76,172 @@ var newThread = function() {
 	);
 };
 
-var comment = {
-	create : function(id, text) {
-	}
+var threadListItemView = function(thread) {
+	return [
+		m("p", [
+			m("a", {
+				href : "/thread/" + thread.id,
+				config : m.route
+			},
+			m.trust(T.trimTitle(thread.text)))
+		]),
+		m("p.comment_count", thread.comment_count + " comment(s)"),
+		m("hr") 
+	];
 }
 
-//Home component
+//Actual component
 var home = {
 	controller : function() {
-		home.vm.init();
+		var self = this;
+
+		this.newThread = function(event) {
+			api.newThread(self.newText)
+				.then(function(response) {
+					self.newText = "";
+					var newThreads = self.threads();
+					newThreads.push(response.data);
+					self.threads(newThreads);
+			});;
+			
+			event.preventDefault();
+		};
+		
+		this.loading = true;
+		this.newText = "";
+		this.threads = api.home();
+
+		this.threads.then(function(response) {
+			document.title = "ThreaditJS: Mithril | Home";
+			self.loading = false;
+			self.threads(response.data);
+		}, function(response) {
+			self.loading = false;
+			self.error = true;
+		});
 	},
-	view : function() {
+	view : function(ctrl, model) {
+		var main; 
+		if(ctrl.loading) {
+			main = m("h2", "Loading");
+		}
+		else if(ctrl.error) {
+			main = m("h2", "Error!  Try refreshing.");
+		}
+		else if(ctrl.notFound) {
+			main = m("h2", "Not found!  Don't try refreshing!");
+		}
+		else {
+			main = [
+					ctrl.threads().map(threadListItemView),
+					newThread(ctrl)
+			];
+		}
+
 		return [
 			header(),
-			m("div.main", 
-				[
-					home.vm.threads()
-						.map(function(thread){
-							return [
-								m("p", [
-									m("a", {
-										href : "/thread/" + thread.id,
-										config : m.route
-									},
-									m.trust(T.trimTitle(thread.text)))
-								]),
-								m("p.comment_count", thread.comment_count + " comment(s)"),
-								m("hr") 
-							];
-						}
-					),
-					newThread()
-				]
-			)
+			m("div.main", main)
 		];
-	},
-	vm : {
-		init : function() {
-			T.timeEnd("Setup");
-			home.vm.threads = m.request({method : "GET", url : T.apiUrl + "/threads"})
-				.then(function(response) {
-					document.title = "ThreaditJS: Mithril | Home";
-					return response.data;
-				});
-		},
-		newThread : function(event) {
-			event.preventDefault();
-			m.request({
-				method: "POST", 
-				url : T.apiUrl + "/threads/create",
-				data : { text: this[0].value }
-
-			})
-			.then(function(response) {
-				var newThreads = home.vm.threads();
-				newThreads.push(response.data);
-				home.vm.threads(newThreads);
-			});
-		}
 	}
 };
 
-var nodeView = function(node) {
-	var reply;
+//THREAD COMPONENT
+//Views 
+var replyView = function(ctrl) {
 	//If the user has clicked 'reply', show the reply form
-	if(node.replying) {
-		reply = m("form", {onsubmit : thread.vm.newComment.bind(node)}, [
+	if(ctrl.replying) {
+		return m("form", {onsubmit : ctrl.submitComment}, [
 			m("textarea", {
-				value : node.newComment,
+				value : ctrl.newComment,
 				oninput : function(e) {
-					node.newComment = e.currentTarget.value;
+					ctrl.newComment = e.currentTarget.value;
 				}
 			}),
 			m("input", {
 				type :"submit",
 				value : "Reply!"
 			}),
-			m("div.preview", m.trust(T.previewComment(node.newComment)))
+			m("div.preview", m.trust(T.previewComment(ctrl.newComment)))
 		]);
 	}
 	else {
-		reply = m("a",{
-			//This makes the node available so we can set the replying flag we just examined
-			onclick: thread.vm.showReplying.bind(node)
+		return m("a",{
+			onclick: ctrl.showReplying
 		},
 		"Reply!");
 	}
+}
 
-	return m("div.comment", [		
-		m("p", m.trust(node.text)),
-		m("div.reply", [reply]),
-		m("div.children", [
-			node.children.map(
-				function(child) {
-					return nodeView(child);
-				}
-			)
-		])
-	]);
+var threadNode = {
+	controller : function(options) {
+		var self = this;
+		this.replying = false;
+		this.newComment = "";
+		this.submitComment = function(event) {
+			api.newComment(self.newComment, options.node.id)
+				.then(function(response) {
+					console.log('called');
+					self.newComment = "";
+					self.replying = false;
+					options.node.children.push(response.data);
+			});
+
+			event.preventDefault();
+		};
+
+		this.showReplying = function(event) {
+			self.replying = true;
+			self.newComment = "";
+			event.preventDefault();
+		};
+	},
+	view : function(ctrl, options) {
+		return m("div.comment", [		
+			m("p", m.trust(options.node.text)),
+			m("div.reply", [replyView(ctrl, options.node)]),
+			m("div.children", [
+				options.node.children.map(
+					function(child) {
+						return m.component(threadNode, {node: child});
+					}
+				)
+			])
+		]);
+	}
 };
-
-//Thread component
+//Actual component
 var thread = {
 	controller : function(){
-		thread.vm.init(m.route.param("id"));
-	},
-	view : function(node) {
-		T.time("Thread render");
-		node = thread.vm.thread().root;
-		return [header(), 
-				m("div.main", {
-					config : function() {
-						T.timeEnd("Thread render");
-					}
-				}, nodeView(node))];
-	},
-	vm : {
-		init: function(id) {
-			thread.vm.thread = m.request({
-				method : "GET",
-				url : T.apiUrl + "/comments/" + id
-			}).then(T.transformResponse)
-			.then(function(obj) {
-				document.title = "ThreaditJS: Mithril | " + T.trimTitle(obj.root.text);
-				return obj;
-			});
-		},
-		showReplying : function(event) {
-			this.replying = true;
-			this.newComment = "";
-			event.preventDefault();
-		},
-		newComment : function(event) {
-			var self = this;
+		var self = this;  
+		this.thread = api.thread(m.route.param("id"));
+		this.loading = true;
 
-			m.request({
-				url : T.apiUrl + "/comments/create", 
-				method : "POST",
-				data : {
-					text : this.newComment,
-					parent : this.id
+		this.thread.then(function(response) {
+			document.title = "ThreaditJS: Mithril | " + T.trimTitle(response.root.text);
+			self.loading = false;
+			return response;
+		}, 
+		function(response) {
+			self.loading = false;
+			if(response.status==404) {
+				self.notFound = true;
+			}
+			else {
+				self.error = true;
+			}
+		});
+	},
+	view : function(ctrl) {
+		T.time("Thread render");
+		var node = ctrl.thread().root;
+		return [
+			header(), 
+			m("div.main", {
+				config : function() {
+					T.timeEnd("Thread render");
 				}
-			})
-			.then(function(response) {
-				self.replying = false;
-				self.children.push(response.data);
-			});
-			event.preventDefault();
-		}
+			},
+			m.component(threadNode, {node: node}))];
 	}
 };
 

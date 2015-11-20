@@ -89,4 +89,16 @@ I'm not entirely sure I'm explaining all of this clearly, if you have any questi
 
 ###Eventual plans
 
-I'd like to add a simple markdown feature to the comments and thus a comment preview.  Automatic generation of some basic stats would be cool as well.  
+Automatic generation of at least the size calculations would be great.  A page comparing individual implementations' modules (the Router) would also be nice.  
+
+---
+
+###Acknowledgments
+
+Thanks to:
+
+* [mixonic](https://github.com/mixonic) for his work on the Ember implementation.
+* [ArthurClemens](https://github.com/ArthurClemens) for giving me good advice on the Mithril implementation over gitter.  
+* [/u/theillustratedlife](http://reddit.com/u/theillustratedlife) for some tips on React.  
+
+And finally, thanks to [PDXJS](http://www.meetup.com/Portland-JavaScript-Admirers/) for encouragement and sound advice.  
