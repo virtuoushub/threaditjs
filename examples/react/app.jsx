@@ -88,10 +88,7 @@ var Thread = React.createClass({
 	},
 	componentDidMount : function() {
 		if(this.props.root) {				
-			//http://stackoverflow.com/questions/26556436/react-after-render-code
-			window.requestAnimationFrame(function(){
-				T.timeEnd("Thread render");
-			});
+			T.timeEnd("Thread render");
 		}
 	}
 });
@@ -103,7 +100,7 @@ var Thread = React.createClass({
 
 //For instance, instead of doing a Redux-style dispatch when telling React to 'render' (really, telling 
 //React to engage its diff and paint if necessary), a global render method is called.  While React does
-//have a philosophy encouraging this re-rendering, it could be accomplished in a more elegant fashion.
+//have a philosophy encouraging direct re-rendering, it could be accomplished in a more elegant fashion.
 
 //For instance, one can imagine the Backbone Collection standing in for this store code very easily, triggering renders
 //on Collection events.  

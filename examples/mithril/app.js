@@ -179,7 +179,6 @@ var threadNode = {
 		this.submitComment = function(event) {
 			api.newComment(self.newComment, options.node.id)
 				.then(function(response) {
-					console.log('called');
 					self.newComment = "";
 					self.replying = false;
 					options.node.children.push(response.data);
