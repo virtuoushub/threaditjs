@@ -33,6 +33,7 @@ threadit.ApiService = Ember.Service.extend({
 		});
 	},
 	fetchComments : function(id) {
+		T.timeEnd("Setup");
 		return $.getJSON(T.apiUrl + "/comments/" + id);
 	},
 	createComment : function(data) {

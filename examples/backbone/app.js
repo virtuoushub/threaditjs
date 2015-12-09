@@ -90,6 +90,8 @@ T.time("Setup");
 				.fail(this.notifyError);
 		},
 		loadThread : function(id) {
+			T.timeEnd("Setup");
+
 			this.trigger("threadLoading");
 			this.currentId = id;
 			$.get(T.apiUrl + "/comments/" + id)

@@ -40,11 +40,13 @@ var Home = Vue.extend({
 Vue.filter("trimThreadTitle", T.trimTitle);
 Vue.filter("preview", T.previewComment);
 
+var renderingThread = false;
 //Comment component.
 var Comment = Vue.component("comment", {
 	template : "#comment",
 	route : {
 		data : function(transition) {
+			T.timeEnd("Setup");
 			return 	reqwest({
 				url : T.apiUrl + "/comments/" + transition.to.params.id,
 				crossOrigin: true
@@ -54,9 +56,7 @@ var Comment = Vue.component("comment", {
 				//We want to avoid the linking of the response contributing to the render time
 				var rtrn =  T.transformResponse(response).root;
 				T.time("Thread render");
-				Vue.nextTick(function() {
-					T.timeEnd("Thread render");
-				});
+				renderingThread = true;
 				return rtrn;
 			});
 		}
@@ -82,6 +82,12 @@ var Comment = Vue.component("comment", {
 				self.responseText = "";
 				self.replying = false;
 			});
+		}
+	},
+	ready : function() {
+		if(renderingThread) {
+			renderingThread = false;
+			T.timeEnd("Thread render");
 		}
 	}
 });
