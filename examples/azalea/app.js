@@ -90,7 +90,7 @@ var components = {
 
 			var p_comment_count = document.createElement('p');
 			p_comment_count.className = 'comment_count';
-			p_comment_count.textContent = thread.comment_count + " comment(s)";
+			p_comment_count.textContent = thread.comment_count + " comment" + (thread.comment_count > 1 ? 's' : '');
 			el.appendChild(p_comment_count);
 
 			var hr = document.createElement('hr');
