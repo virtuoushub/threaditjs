@@ -1,0 +1,28 @@
+<!doctype html>
+<link rel="stylesheet" href="http://threaditjs.com/reset.css"/>
+<link rel="stylesheet" href="http://threaditjs.com/shared.css"/>
+<link rel="stylesheet" href="/colors.css"/>
+<title>ThreaditJS: Azalea</title>
+<script src="http://threaditjs.com/shared.js"></script>
+<script src="/lib/azalea.js"></script>
+<script type="text/template" id="home">
+	<div component="threads"></div>
+	<form component="newThread">
+		<textarea name="text"></textarea>
+		<input type="submit" value="Post!">
+	</form>	
+
+</script>
+<script type="text/template" id="thread">
+	<div component="thread"></div>
+</script>
+<script src="/app.js"></script>
+<body>
+	<p class="head_links"><a href="https://github.com/koglerjs/threaditjs/tree/master/examples/azalea">Source</a> | 
+		<a href="http://threaditjs.com">ThreaditJS Home</a>
+	</p>
+
+	<h2><a href="http://azalea.threaditjs.com">ThreaditJS: Azalea</a></h2>
+
+	<div http class="main"></div>
+</body>
