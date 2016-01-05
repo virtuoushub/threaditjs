@@ -4,7 +4,7 @@
 
 Backbone isn't the prettiest implementation, taking up 400 lines or so of code, much of which has the feel of boilerplate.  But it performs well and you wouldn't use Backbone without Marionette or something nowadays anyway.  
 
-Backbone is one of my favorite libraries; my background in SPAs has a lot of Backbone in it.  But I wouldn't use Backbone to start a project from scratch, and I'm not sure how I feel about any of the multitude of Backbone extensions.  
+Backbone is one of my favorite libraries; my background in SPAs has a lot of Backbone in it.  But I wouldn't use Backbone by itself to start a project from scratch, and I'm not sure how I feel about any of the multitude of Backbone extensions.  
 
 ---
 
