@@ -14,14 +14,14 @@ var api = {
 		return m.request({
 			method : "GET",
 			url : T.apiUrl + "/comments/" + id
-		}).then(T.transformResponse)
+		}).then(T.transformResponse);
 	},
 	newThread : function(text) {
 		return m.request({
 			method: "POST", 
 			url : T.apiUrl + "/threads/create",
 			data : { text: text }
-		})
+		});
 	},
 	newComment : function(text, id) {
 		return m.request({
@@ -31,9 +31,9 @@ var api = {
 				text : text,
 				parent : id
 			}
-		})
+		});
 	}
-}
+};
 
 //Shared Views
 var header = function() {
@@ -87,7 +87,7 @@ var threadListItemView = function(thread) {
 		m("p.comment_count", thread.comment_count + " comment(s)"),
 		m("hr") 
 	];
-}
+};
 
 //Actual component
 var home = {
@@ -101,7 +101,7 @@ var home = {
 					var newThreads = self.threads();
 					newThreads.push(response.data);
 					self.threads(newThreads);
-			});;
+			});
 			
 			event.preventDefault();
 		};
@@ -169,7 +169,7 @@ var replyView = function(ctrl) {
 		},
 		"Reply!");
 	}
-}
+};
 
 var threadNode = {
 	controller : function(options) {

@@ -1,0 +1,243 @@
+Dependency Load Time 
+
+Ember:
+
+1748 first time
+
+500-600
+
+250-350 if it's just ember.min (without jQuery)
+
+
+Angular
+
+770 first time
+
+150-200
+
+
+React
+
+700 first time
+
+250-350
+
+
+Backbone
+
+550 first time
+
+200-250
+
+
+Vue
+
+550 first time
+
+150-200
+
+
+Mithril
+
+194 first time
+
+70-120
+
+---
+
+Gzip size
+
+Mithril
+7kb
+
+Ember               (unzipped)
+112kb					 428k
+jquery 1.11 33k		     94k
+
+Angular
+52k angular.min          145k
+2k angular route         4.3k
+2k angular resource      3.6k
+
+Backbone
+backbone 7.4             23k
+underscore 5.7           17k
+jquery 29k               83k
+
+
+vue
+reqwest 3.7 	    9.7kb
+vue 24  			  73k
+vue-router 9.145k     27k
+
+
+react
+reqwest 3.7         9.7kb
+react 39k 			133k
+grapnel 2k 		    5.3k
+
+
+
+SETUP TIMES ON ANDROID
+
+Ember
+766
+1862
+636
+1952
+649
+2155
+748
+1749
+700
+1811
+614
+
+
+Angular
+1397
+1217
+223
+257
+239
+540
+1368
+308
+262
+408
+230
+
+
+backbone
+91
+33
+34
+40
+67
+31
+85
+41
+35
+32
+
+mithril
+12ms
+6ms
+15
+6
+5
+12
+11
+
+vue
+204
+69
+111
+69
+77
+67
+160
+74
+
+react
+27ms
+84ms
+27ms
+28ms
+28ms
+48ms
+
+
+LARGE THREAD 925 COMMENTS ON ANDROID
+
+Vue
+15104ms
+11085
+12883
+12611
+10846
+12687
+
+
+Ember
+9299ms
+20158ms
+20428ms
+9429ms
+33373ms
+27398ms
+
+Angular
+47471ms
+30532ms
+the digest errors practically crash the browser, so that'll be enough
+
+React
+4834ms
+3849ms
+3939ms
+4143ms
+4023ms
+3982ms400
+
+mithril
+1746
+1620
+1726
+1609
+1575
+
+backbone
+4121 ms
+3776 ms
+3953 ms
+4131 ms
+
+
+MOBILE RENDER 100 comments
+
+vue
+2743
+1850
+1536
+1521
+2012
+1647
+
+
+react
+486ms
+400ms
+360ms
+376ms
+379ms
+
+
+
+angular
+4362
+3400
+4474 
+angular freezes the console with its mass of error messages, so these three are good enough for me.  
+
+Backbone
+554ms
+498ms
+488ms
+468ms
+489ms
+
+
+mithril
+221ms
+181ms
+216ms
+185ms
+240
+
+
+ember
+1689ms
+2259ms
+1445ms
+1407ms

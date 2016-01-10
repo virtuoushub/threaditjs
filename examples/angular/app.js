@@ -58,7 +58,7 @@ threaditControllers.controller("ThreadListCtrl", ["$scope", "Home",
 threaditApp.filter("trust", ["$sce", function($sce) {
 	return function(html) {
 		return $sce.trustAsHtml(html);
-	}
+	};
 }]);
 
 threaditControllers.controller("CommentsCtrl", ["$scope", "$routeParams", "Comment",
@@ -127,7 +127,7 @@ var monitorDOM = function(count) {
 			T.timeEnd("Thread render");
 		}
 	}, 50);
-}
+};
 
 commentServices.factory("Comment", ["$resource",
 	function($resource) {

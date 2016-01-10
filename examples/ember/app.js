@@ -96,7 +96,7 @@ threadit.ThreadRoute = Ember.Route.extend({
 		//It seems to be a safe assumption that Ember doesn't give up controlf the thread until after rendering.
 		//In any case, I'm not sure where else to attempt to capture the end of the render.  
 		setTimeout(function() {
-			T.timeEnd("Thread render")
+			T.timeEnd("Thread render");
 		}, 0);
 		document.title = "ThreaditJS: Ember | " + T.trimTitle(model.root.text, 80);
 	}
