@@ -28,6 +28,8 @@ I tried looking at the flame charts as [suggested here](http://stackoverflow.com
 
 It takes Angular 25 or so seconds to (fail to) render the XL thread.  For the moderate thread, I'll wait until I can get some actual numbers.  
 
+Update mid-January: I coded a simple timeout to check and see how many comments were currently in the DOM.  I think I will have all implementations measure render completion with this method; it's fair, transparent, and means I don't have to find post-render hooks for every single library.  
+
 ---
 
 # Angular Resource

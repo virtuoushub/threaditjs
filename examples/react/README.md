@@ -1,10 +1,30 @@
 # React
 
-Of the implementations, the React one is my worst work; it's not particularly idiomatic and has several known React anti-patterns.  Initially, the React implementation used Redux, but that got scrapped in favor of just getting it done.  
+Of the implementations, the React one was my worst work; it wasn't particularly idiomatic and has several known React anti-patterns.  Initially, the React implementation used Redux, but that got scrapped in favor of just getting it done.  
 
-High on the TODOs for this project is replacing this example with a full, compliant Redux + React implementation.  
+That has changed somewhat.  The View code has been cleaned up and is now as idiomatic as I can manage.  
 
-Still, some things will likely remain the same.  
+## But I'm keeping this implementation React only.  
+
+I don't really know how to deal with React's identity problem, and I would vaguely question that it even _has_ one except for the grumblings I hear about the React ecosystem that I quickly sympathize with.  
+
+When trying to incorporate Redux, it bothered me a lot that I was trying to essentially create a Facebook example instead of a React example.  I can't personally tie together an idiomatic Facebook Relay-Redux-React implementation because I don't think that such a thing necessarily exists.  I was struggling with too many disconnected concepts.  
+
+As I'm still very interested in Redux, look for a Redux implementation in the near future.  
+
+And I would _absolutely_ welcome a facebook.threaditjs.com example.  You'd be making, in effect, a pretty daring argument about what the Facebook Contestant looks like, unofficially.  That's the nice thing about Angular and Ember; they're definite coherent visions of the future of web development.  
+
+For this implementation, however: if we're to buy React's claim that it's just the view layer, we cannot get entangled in this anomie about a unified Facebook design.  Yes, Redux + React is hot right now.  Yes, react-router is an accepted addition to the React stack, such as it is.  
+
+This example is React only, even if somem of the following reactions touch on this hypothetical Facebook implementation as well.  
+
+## Performance
+
+Using the production version of React makes a significant difference in render performance.  Development mode it takes 15 seconds on the large fixture; production mode only 4.  This is the difference between Vue and Backbone, roughly.  
+
+The medium fixture takes 400ms to render, and it takes about 300ms to parse/execute react.min.js.  
+
+None of my performance measures the overhead of JSXTransformer.  It wouldn't really be correct to craft an implementation using React.DOM calls only, as that's not the intended use of React.  
 
 ---
 
@@ -61,8 +81,8 @@ I see.  That explains a lot.
 
 So I plopped Grapnel in, created my own 10-line <Link> implementation, and had everything working in about two minutes.  I suspect that this wouldn't work for a larger application, but I would rather manage it myself than leave it to React Router: your mileage may vary.  
 
-## Performance
+---
 
-I'm waiting until I have a Redux + React implementation for the setup metrics; however, React rendered the XL thread in about 15 seconds.  The dependencies are parsed in 250-350ms, with a first load+parse of 700ms.  Pretty comparable to Angular.  
+## Bottom Line
 
-The problem with the setup metric is that it's not necessarily fair to include JSXTransformer's overhead.  I'm not sure how exactly to deal with this.  It wouldn't really be correct to craft an implementation using React.DOM calls only, as that's not the intended use of React.  Nor can I overlook the overhead of JSX.  
+The current reigning champion in our hearts and minds, but it bothers me that React is just about as fast as Backbone (though much prettier, even, I admit, _with_ JSX).  

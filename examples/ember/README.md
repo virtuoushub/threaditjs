@@ -14,13 +14,13 @@ But I'm _evaluating_ these frameworks, I'm not a cheerleader.
 
 # Performance
 
-Under no circumstance can you claim to care about mobile performance and use Ember.  On my Samsung Galaxy S3, there's an automatic 1.3 second penalty between page load and before the user sees anything under the **best case** (with successful cache hits): 600 ms to **parse** ember.min.js and jquery.min.js, and 700 ms for the initialization.  
+Under no circumstance can you claim to care about mobile performance and use Ember.  On my Samsung Galaxy S3, there's an automatic 1.1 second penalty between page load and before the user sees anything under the **best case** (with successful cache hits): 600 ms to **parse/execute** ember.min.js and jquery.min.js, and 500 ms for the initialization.  
 
 You can run these tests yourself: go [here](http://ember.threaditjs.com/depload.html) to see how long it takes for dependencies to load on your machine.  Note how the first visit is expensive; subsequent visits will use the cache.  
 
 And check the console in the [Ember implementation](http://ember.threaditjs.com) to see setup time.  (On Android you can put about:debug into the address bar to access the console.)
 
-In the worst case scenario, it took 1.7 seconds for my phone to download (4G) and parse the dependencies.  I also commonly saw 2 seconds of initialization time.  
+In the worst case scenario, it took 1.7 seconds for my phone to download (4G) and parse the dependencies.  I also commonly saw a whole second for initialization time.  
 
 **Under no circumstance can you use Ember and also claim to care about mobile performance.**
 
@@ -58,7 +58,7 @@ If anyone is impressed with how short Ember's implementation is compared to the 
 
 ember-cli is the recommended way to manage an Ember app.  It wasn't even installing 2.1.0 (released October 4th) until November 10th.  
 
-(It also defaults to installing jQuery 1.11.1 instead of 1.11.3, but that's a little less pressing in my mind.  Although, in a codebase the size of Ember's, just how confident are you in upgrading to a newer version of jQuery on your own?)
+(It also defaulted to installing jQuery 1.11.1 instead of 1.11.3, but that's a little less pressing in my mind.  Although, in a codebase the size of Ember's, just how confident are you in upgrading to a newer version of jQuery on your own?)
 
 (The answer is, you should feel comfortable bringing any problems you have to the Ember community, and maybe you'll even be able to contribute a solution!)
 
@@ -87,3 +87,45 @@ Ember Data has no excuse at this late stage of its existence.  From what I hear,
 # Bottom Line
 
 Ember is an active treadmill of code for code's sake without any direction or restraint.  And Ember has wasted enough of my time.  I included it out of a nod to the 2.0 release and to prove I gave it as fair an evaluation as I can give it.  
+
+---
+
+Believe it or not, the above was all written prior to the main performance article.   
+
+### A few further reflections having completed the [preliminary performance](https://koglerjs.com/verbiage/performance) review.  
+
+I don't see what value I'm supposed to get from Ember's mass.  Mithril is a framework: it is a one-stop solution for everything an SPA needs.  I'm not even sure I like Mithril that much, with all the nested m() calls.  It just seems to do the least amount of needless handwaving of any solution out there right now.  
+
+### Not all bytes of code are created equal.  
+
+What am I not making use of that a single page application needs?  
+
+Every bit of code does something for someone.  This may be technically true.  I simply do not believe that this is so.  Some programs are more efficient than others.  Computer science is full of these lessons.  
+
+If you want to convince me Ember has merit, you're going to have to point to something ThreaditJS should be doing that it isn't currently.  What could an SPA be getting out of Ember's massive constantly changing codebase that I'm currently not using?  
+
+What I mean by specifying what an SPA could get out of Ember: something like 'server side rendering' is not an answer I'll accept here.  What does Ember, the SPA technology, provide that I'm not utilizing?  
+
+While I'm thinking about it, though, Mithril could render once on the server so it has something to show while it **regenerates everything entirely on the client** before Ember would even be done _running its minified dependencies_.  The most straightforward blunt implementation of server-side rendering with Mithril would be a performance improvement over Ember.  
+
+---
+
+## HTMLBars in the client and ember-cli
+
+As said elsewhere: this should affect only the initialization time I believe, there's no reason for it to affect the render pipeline.  
+
+I would be a little curious to see how an ember-cli generated application would perform.  However, Vue, Backbone, and Angular all parse their templates in the client.  Pre-processing Ember's templates would have to be _incredbly_ efficient in order to take the initialization time to even Angular's 300 milliseconds.  
+
+It's possible that this is unfair to Ember and Ember suffers from this (in my view) reasonable but admittedly arbitrary restriction more than the other solutions.  
+
+But is it unfair _enough_?  
+
+Ember's benefits may be entirely social, which cold heartless milliseconds cannot measure.  You might accuse me of coming into this with a bias against kilobytes.  
+
+Maybe I'm thus biased, coming from a Backbone perspective where things are small and not magically linked, and my inability to see much of the benefit of being on the other side of the fence is a downside.  I can certainly understand the concept that Ember has provided a permanence that is of value to a long-term thinking entity like a corporation.  
+
+But there's also the possibility that the other side of the fence has its own biases, and this should be considered a friendly but pointed ping back from my side of the fence, a side focused on basic performance and simplicity.  
+
+I'm not trying to be mean.  I really enjoy playing with Javascript tech and believe it's certainly possible that Ember has been the right decision for some teams in some circumstances.  
+
+But revisiting all of this, my conclusion remains the same: **you cannot use Ember and claim to care about mobile performance**.  

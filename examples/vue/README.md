@@ -18,7 +18,9 @@ Vue.nextTick doesn't do quite what I thought it would; it clearly fires well bef
 
 When I first announced the project (before I had performance metrics), Vue had a significant delay on larger threads, and I said it was the slowest at rendering large threads.  By coincidence, an updated version of Vue came out and seems to have improved performance significantly.  
 
-On large threads it has roughly similar performance to React: 15 or so seconds.  I'll wait until I can get a post-render hook for Vue to try to measure performance on the medium thread.  
+On large threads it has roughly similar performance to React's development build: 15 or so seconds.  
+
+Update mid-January: instead of nextTick, the 'ready' function and a basic lock sufficed for a post-render hook.  
 
 ---
 

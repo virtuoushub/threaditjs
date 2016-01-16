@@ -12,9 +12,15 @@ The shortest download+parse time (~200ms), the shortest parse time (80-100ms), t
 
 ## Frustrations
 
+### Render functions feel a little messy
+
 Mithril transforms your render functions/'templates' into a mass of parentheses and rectangle brackets.  
 
-I haven't used [MSX](https://github.com/insin/msx), but I would likely do so, and I'd likely incorporate it into a build system that includes a template manager.  
+I haven't used [MSX](https://github.com/insin/msx), but I would likely do so, and I'd likely incorporate it into a build system that includes a template manager (that is, no inline MSX for me).  
+
+### Weird thennables
+
+Mithril thennables take [two functions as optional parameters](https://lhorie.github.io/mithril/mithril.request.html#binding-errors), success and error.  Fortunately, enough people have been after them saying "Please just do promises like everyone else does" that an upcoming version of Mithril will have fixed this.  
 
 ---
 

@@ -1,6 +1,6 @@
 ### ThreaditJS is an example application for SPA libraries/frameworks.  
 
-For ThreaditJS news, please follow [@ThreaditJS](http://twitter.com/threaditjs).  
+For news, please follow [@ThreaditJS](http://twitter.com/threaditjs).  
 
 ---
 
@@ -12,7 +12,7 @@ The main application shows a list of threads similar to a well known Internet di
 
 ## Current Mobile Performance Comparison
 
-[See here](https://koglerjs.com/verbiage/performance).
+[See here](https://koglerjs.com/verbiage/performance) for some preliminary results.  
 
 ---
 
@@ -20,12 +20,12 @@ The main application shows a list of threads similar to a well known Internet di
 
 Currently, I have:
 
-* [Backbone](http://backbone.threaditjs.com)
-* [Ember](http://ember.threaditjs.com)
-* [Angular](http://angular.threaditjs.com)
-* [Mithril](http://mithril.threaditjs.com)
-* [React](http://react.threaditjs.com)
-* [Vue](http://vue.threaditjs.com)
+* [Angular](http://angular.threaditjs.com) | [Source](https://github.com/koglerjs/threaditjs/tree/master/examples/angular)
+* [Backbone](http://backbone.threaditjs.com) | [Source](https://github.com/koglerjs/threaditjs/tree/master/examples/backbone)
+* [Ember](http://ember.threaditjs.com) | [Source](https://github.com/koglerjs/threaditjs/tree/master/examples/ember)
+* [Mithril](http://mithril.threaditjs.com) | [Source](https://github.com/koglerjs/threaditjs/tree/master/examples/mithril)
+* [React](http://react.threaditjs.com) | [Source](https://github.com/koglerjs/threaditjs/tree/master/examples/react)
+* [Vue](http://vue.threaditjs.com) | [Source](https://github.com/koglerjs/threaditjs/tree/master/examples/vue)
 
 I have also accepted pull requests for:
 
@@ -57,7 +57,7 @@ The goal is to have an application with roughly similar simplicity while providi
 
 ---
 
-## The ThreaditJS API
+## The API
 
 All implementations will use the same API, located at api.threaditjs.com.  Arguably someone could even come up with a native mobile consumer implementation.  See the [Github page](http://github.com/koglerjs/threaditjs) for more on the API.  
 
