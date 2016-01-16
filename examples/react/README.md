@@ -12,7 +12,7 @@ When trying to incorporate Redux, it bothered me a lot that I was trying to esse
 
 As I'm still very interested in Redux, look for a Redux implementation in the near future.  
 
-And I would _absolutely_ welcome a facebook.threaditjs.com example.  You'd be making, in effect, a pretty daring argument about what the Facebook Contestant looks like, unofficially.  That's the nice thing about Angular and Ember; they're definite coherent visions of the future of web development.  
+And I would _absolutely_ welcome a facebook.threaditjs.com example.  You'd be making, in effect, a pretty daring argument about what the Facebook Framework looks like, unofficially.  That's the nice thing about Angular and Ember; they're definite coherent visions of the future of web development.  
 
 For this implementation, however: if we're to buy React's claim that it's just the view layer, we cannot get entangled in this anomie about a unified Facebook design.  Yes, Redux + React is hot right now.  Yes, react-router is an accepted addition to the React stack, such as it is.  
 
