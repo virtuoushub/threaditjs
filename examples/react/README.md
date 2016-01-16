@@ -85,4 +85,4 @@ So I plopped Grapnel in, created my own 10-line <Link> implementation, and had e
 
 ## Bottom Line
 
-The current reigning champion in our hearts and minds, but it bothers me that React is just about as fast as Backbone (though much prettier, even, I admit, _with_ JSX).  
+The current reigning champion in our hearts and minds, but it bothers me that React is just about as fast as Backbone (though the app code is much prettier, even, I admit, _with_ JSX).  
