@@ -30,6 +30,7 @@ Currently, I have:
 I have also accepted pull requests for:
 
 * [Azalea](http://azalea.threaditjs.com)
+* [domvm](http://domvm.threaditjs.com)
 
 ---
 
