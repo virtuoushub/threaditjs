@@ -1,92 +1,152 @@
 T.time("Setup");
 
-// mutation observer that'll reduce appVm.redraw() boilerplate
-var w = domvm.watch(function(e) {
-	appVm.redraw();
-});
+var app = new ThreaditApp();
 
-// separate noop observer to use its ajax helpers without redraw
-var w0 = domvm.watch();
+domvm.route(ThreaditRouter, app);
+
+function ThreaditRouter(router, app) {
+	router.config({
+		useHist: false,
+		root: "/domvm/demos/threaditjs",
+		init: function() {
+			app.view = domvm.view(ThreaditView, {app: app, router: router});
+
+			app.view.mount(document.body);
+
+			// add follow-up redraw timer
+			domvm.view.config({useRaf: false});
+			app.view.hook({
+				willRedraw: function() { T.time("Full redraw()"); },
+				didRedraw: function() { T.timeEnd("Full redraw()"); },
+			});
+
+			router.refresh();
+		},
+	});
+
+	var titlePre = "ThreaditjS: domvm | ";
+
+	return {
+		threadList: {
+			path: "/",
+			onenter: function(segs) {
+				document.title = titlePre + "Thread List";
+				app.getThreads();
+			},
+		},
+		thread: {
+			path: "/threads/:id",
+			vars: {id: /[a-zA-Z0-9]{5,7}/},
+			onenter: function(segs) {
+				document.title = titlePre + "Thread #" + segs.id;
+				app.getComments(segs.id);
+			},
+		},
+//		_noMatch: {
+//			path: "/404",
+//		}
+	};
+}
 
 // model/state/api
 function ThreaditApp() {
-	this.threads	= w.prop([]);
-	this.comments	= w.prop([]);
-	this.error		= w.prop(null);
+	var self = this;
 
-	this._onErr = function(err) {
-		this.error(err.message);
-	}.bind(this);
+	// mutation observer that'll reduce app.vm.redraw() boilerplate
+	var w = domvm.watch(function(e) {
+		self.view.redraw();
+	});
+
+	// additional noop observer just for ajax sugar methods
+	var w0 = domvm.watch();
+
+	this.threads	= w.prop([]);
+	this.comments	= w.prop({});
+	this.error		= w.prop(null);		// doubles as generic message for "loading"?
+
+	function clearCache() {
+		if (self.threads().length || self.comments().root || self.error()) {
+			self.threads([]);
+			self.comments({});
+		}
+
+		self.error(null, false);		// clears error without redraw
+	}
+
+	function setError(err) {
+		self.error(err.message);
+	}
+
+	this.newThread = function(text, cb) {
+		var onOk = function(resp) { self.threads().push(resp.data); cb && cb(); };
+		return w.post(T.apiUrl + "/threads/create", {text: text}, [onOk, setError]);
+	};
+
+	this.newComment = function(parent, text, cb) {
+		var onOk = function(resp) { parent.children.push(resp.data); cb && cb(); };
+		return w0.post(T.apiUrl + "/comments/create", {text : text, parent: parent.id}, [onOk, setError]);
+	};
+
+	this.getThreads = function() {
+		clearCache();
+		var onOk = function(resp) { self.threads(resp.data); };
+		T.timeEnd("Setup");
+		return w.get(T.apiUrl + "/threads/" + ("?" + +new Date()), [onOk, setError]);
+	};
+
+	this.getComments = function(id) {
+		clearCache();
+		var onOk = function(resp) { self.comments(T.transformResponse(resp)); };
+		T.timeEnd("Setup");
+		w.get(T.apiUrl + "/comments/" + id + ("?" + +new Date()), [onOk, setError]);
+	};
 }
 
-ThreaditApp.prototype = {
-	newThread: function(text, cb) {
-		var onOk = function(resp) { this.threads().push(resp.data); cb && cb(); }.bind(this);
-		return w.post(T.apiUrl + "/threads/create", {text: text}, [onOk, this._onErr]);
-	},
-	newComment: function(parent, text, cb) {
-		var onOk = function(resp) { parent.children.push(resp.data); cb && cb(); };
-		return w0.post(T.apiUrl + "/comments/create", {text : text, parent: parent.id}, [onOk, this._onErr]);
-	},
-	getThreads: function(initial) {
-		!initial && this.threads([]);
-		var onOk = function(resp) { this.threads(resp.data); }.bind(this);
-	//	T.timeEnd("Setup");
-		return w.get(T.apiUrl + "/threads/", [onOk, this._onErr]);
-	},
-	getComments: function(id, initial) {
-		!initial && this.comments([]);
-		var onOk = function(resp) { this.comments(T.transformResponse(resp)); }.bind(this);
-	//	T.timeEnd("Setup");
-		w.get(T.apiUrl + "/comments/" + id, [onOk, this._onErr]);
-	},
-};
-
-function ThreaditView(vm, imp) {
+function ThreaditView(vm, deps) {
 	return function() {
-		var route = imp.router.current();
+		var route = deps.router.location();
 
 		return [".body",
 			["p.head_links",
-				["a", {href: "https://github.com/koglerjs/threaditjs/tree/master/examples/domvm"}, "Source"],
+				["a", {href: "https://github.com/leeoniya/domvm/tree/master/demos/threaditjs"}, "Source"],
 				" | ",
 				["a", {href: "http://threaditjs.com"}, "ThreaditJS Home"]
 			],
 			["h2",
-				["a", {href: "http://domvm.threaditjs.com"}, "ThreaditJS: domvm"]
+				["a", {href: "http://leeoniya.github.io/domvm/demos/threaditjs/"}, "ThreaditJS: domvm"]
 			],
 			[".main",
-			 	imp.app.error() ?
-			 	["p", ["strong", "Server's angry! "], imp.app.error]
+			 	deps.app.error() ?
+			 	["p", ["strong", "Server's angry! "], deps.app.error]
 			 	: route.name == "threadList"
-			 	? [ThreadListView, imp.app.threads, null, imp]
+			 	? [ThreadListView, deps, deps.app.threads]
 			 	: route.name == "thread"
-			 	? [ThreadBranchView, imp.app.comments().root, null, imp]
+			 	? [ThreadBranchView, deps, deps.app.comments().root || false]
 			 	: null,
 			]
 		]
 	}
 }
 
-function ThreadListView(vm, threads, key, imp) {
+function ThreadListView(vm, deps, threads) {
 	var submitting = false;
 
 	// sub-template
 	function threadListItemTpl(thread) {
 		return [
 			["p",
-				["a", {href: imp.router.href("thread", [thread.id])}, T.trimTitle(thread.text)]			//	r.goto("comment", [5]);
+				["a", {href: deps.router.href("thread", {id: thread.id}), _raw: true}, T.trimTitle(thread.text)]			//	r.goto("comment", [5]);
 			],
 			["p.comment_count", thread.comment_count + " comment" + (thread.comment_count !== 1 ? "s" : "")],
 			["hr"],
 		]
 	}
 
-	function newThread(e) {
+	function newThread(e, node) {
 		submitting = true;
 		vm.redraw();
 
-		imp.app.newThread(vm.refs.text.el.value, function() {
+		deps.app.newThread(vm.refs.text.el.value, function() {
 			submitting = false;
 		});
 
@@ -109,16 +169,16 @@ function ThreadListView(vm, threads, key, imp) {
 }
 
 // sub-view (will be used recursively)
-function ThreadBranchView(vm, comment, key, imp) {
+function ThreadBranchView(vm, deps, comment) {
 	return function() {
 		return [".comment",
 			!comment
-			? ["p", {style: {marginBottom: 20, fontWeight: "bold"}}, "Loading thread " + imp.router.current().params[0] + "..."]
+			? ["p", {style: {marginBottom: 20, fontWeight: "bold"}}, "Loading thread " + deps.router.location().segs.id + "..."]
 			: [
 				["p", {_raw: true}, comment.text],
-				[CommentReplyView, comment, null, imp],
+				[CommentReplyView, deps, comment],
 				[".children", comment.children.map(function(comment2) {
-					return [ThreadBranchView, comment2, null, imp];
+					return [ThreadBranchView, deps, comment2];
 				})]
 			]
 		];
@@ -126,32 +186,33 @@ function ThreadBranchView(vm, comment, key, imp) {
 }
 
 // sub-sub view
-function CommentReplyView(vm, comment) {
+function CommentReplyView(vm, deps, comment) {
 	var replying = false;
 	var submitting = false;
 	var tmpComment = "";
 
-	function toggleReplyMode(e) {
+	function toggleReplyMode(e, node) {
 		replying = !replying;
 		vm.redraw();
 		return false;
 	}
 
-	function newComment(e) {
+	function newComment(e, node) {
 		submitting = true;
 		replying = false;
 		vm.redraw();
 
-		vm.imp.app.newComment(comment, tmpComment, function() {
+		deps.app.newComment(comment, tmpComment, function() {
 			submitting = false;
+			tmpComment = "";
 			vm.redraw(1);	// redraw parent
 		});
 
 		return false;
 	}
 
-	function previewReply(e) {
-		tmpComment = e.target.value;
+	function previewReply(e, node) {
+		tmpComment = node.el.value;
 		vm.redraw();
 	}
 
@@ -172,48 +233,4 @@ function CommentReplyView(vm, comment) {
 			["a", { href: "#", onclick: toggleReplyMode }, "Reply!"]
 		];
 	}
-};
-
-function ThreaditRouter(rt, imp) {
-	var titlePre = "ThreaditjS: domvm | ";
-	var routePre = "";
-
-	return {
-		threadList: {
-			path: routePre + "/",
-			onenter: function(e) {
-				document.title = titlePre + "Thread List";
-				imp.app.getThreads(!e.from);
-			},
-		},
-		thread: {
-			path: routePre + "/thread/:id",
-			params: {id: /[a-zA-Z0-9]{5,7}/},
-			onenter: function(e, id) {
-				document.title = titlePre + "Thread #" + id;
-				imp.app.getComments(id, !e.from);
-			},
-		},
-//		_noMatch: {
-//			path: "/404",
-//		}
-	};
 }
-
-var app = new ThreaditApp();
-
-// router uses app to invoke api/fetch calls on history changes
-var router = domvm.route(ThreaditRouter, {app: app});
-
-var opts = { hooks: { didMount: function() { T.timeEnd("Setup"); } } };
-
-// our view uses app for render and router to construct hrefs for links
-var appVm = domvm.view(ThreaditView, {app: app, router: router}, null, null, opts).mount(document.body);
-
-// add follow-up redraw timer
-appVm.hook({
-	willRedraw: function() { T.time("Full redraw()"); },
-	didRedraw: function() { T.timeEnd("Full redraw()"); },
-});
-
-router.refresh();
