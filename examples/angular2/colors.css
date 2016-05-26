@@ -1,7 +1,9 @@
 html {
 	background: #333;
 }
-
+my-app {
+	display: block;
+}
 a{
 	color : #428bca;
 	text-decoration:none;

@@ -1,1 +1,6 @@
-Hello, World!
+<div *ngFor="let thread of threads">
+    <p class="thread_title"><a href="/thread/{{thread.id}}">{{trimTitle(thread.text)}}</a></p>
+    <p class="comment_count">{{thread.commentCount}} comments</p>
+    <hr/>
+</div>
+
