@@ -1,0 +1,17 @@
+<p>{{comment.text}}</p>
+
+<div class="reply"><a href="javascript:void(0)">Reply</a></div>
+
+<div class="children">
+	{{#each comment.children as child}}
+		<ThreadComment comment={{child}}></ThreadComment>
+	{{/each}}
+</div>
+
+<script>
+	export default {
+		components: {
+			ThreadComment
+		}
+	}
+</script>

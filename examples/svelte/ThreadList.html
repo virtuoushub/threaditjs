@@ -1,0 +1,17 @@
+
+{{#each threads as thread}}
+  <ThreadItem thread={{thread}}></ThreadItem>
+{{/each}}
+
+<form>
+	<textarea></textarea>
+	<input type="submit" value="Post!"/>
+</form>
+
+<script>
+	export default {
+		components: {
+			ThreadItem
+		}
+	};
+</script>

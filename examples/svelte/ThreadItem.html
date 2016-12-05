@@ -1,0 +1,13 @@
+<p><a href="/thread/{{thread.id}}">
+	{{ trimTitle(thread.text) }}
+</a></p>
+<p class="comment_count">{{thread.comment_count}} comment(s)</p>
+<hr/>
+
+<script>
+	export default {
+		helpers: {
+			trimTitle: T.trimTitle
+		}
+	};
+</script>
