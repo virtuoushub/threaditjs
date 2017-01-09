@@ -83,7 +83,7 @@ Note that not every current implementation is successful in all of these things;
 
 If you just want to develop a SPA for your framework of choice, you can develop against api.threadit.com directly, as the ACAH have been set to ~~kill~~ allow all.  
 
-I went to a bit of trouble to give every SPA control of its url space past the domain name.  If you want to run the whole project, you'll probably want to add the hosts in hosts.snippet to the /etc/hosts, and `touch .local` will put the application in development mode.  Then running 'sudo node index.js' will allow you to see yourfolder at yourfolder.local.threaditjs.com.  
+I went to a bit of trouble to give every SPA control of its url space past the domain name.  If you want to run the whole project, `touch .local` will put the application in development mode.  Then running 'sudo node index.js' will allow you to see yourfolder at yourfolder.local.threaditjs.com.  
 
 I'm not entirely sure I'm explaining all of this clearly, if you have any questions try [@koglerjs](http://twitter.com/koglerjs).  
 
@@ -100,5 +100,6 @@ Thanks to:
 * [mixonic](https://github.com/mixonic) for his work on the Ember implementation.
 * [ArthurClemens](https://github.com/ArthurClemens) for giving me good advice on the Mithril implementation over gitter.  
 * [/u/theillustratedlife](http://reddit.com/u/theillustratedlife) for some tips on React.  
+* [Pat Cavit](https://twitter.com/tivac) for a great DNS tweak that simply hadn't occurred to me.  
 
 And finally, thanks to [PDXJS](http://www.meetup.com/Portland-JavaScript-Admirers/) for encouragement and sound advice.  

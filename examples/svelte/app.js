@@ -101,7 +101,7 @@ router.get("/thread/:id", function(req) {
 		document.title = "ThreaditJS: Svelte | " + T.trimTitle(
 			store.threadsData[store.currentRoot].text
 		);
-		T.time("Thread render");
+		T.timeComments("Thread render", store.threadsData[store.currentRoot].comment_count);
 		new ThreadComment({
 			target: document.querySelector(".main"),
 			data: {

@@ -1289,7 +1289,7 @@ if (typeof module !== 'undefined' && typeof exports === 'object') {
 
 
 (function() {
-	var timers = {};
+  var timers = {};
 	var titleTrimLength = 120;
 	var apiRoot = "http://api.threaditjs.com";
 	var exports = {
@@ -1344,29 +1344,52 @@ if (typeof module !== 'undefined' && typeof exports === 'object') {
 				sanitize: true
 			});
 		},
+    getNow : function() {
+      if(performance&&performance.now) {
+        T.getNow = function() {
+          return performance.now();
+        }
+      }
+      else {
+        T.getNow = function(){
+          return Date.now()
+        };
+      }
+      return T.getNow();
+    },
 		//turns out that there isn't really a way to tell if console.time is available
 		//Android stock browser acts like it's a function but doesn't print anything to its console.  
 		//So we're just going to use this one for the most part.  
 		time : function(str) {
-			timers[str] = Date.now();
+			timers[str] = T.getNow();
 			console.log(str + ": started.");
 		},
 		timeEnd : function(str) {
 			if(!timers[str]) return;
-
-			console.log(str + ": " + (Date.now() - timers[str]) + "ms");
+			console.log(str + ": " + (T.getNow() - timers[str]) + "ms");
 
 			timers[str] = undefined;
 		},
+    timeComments : function(str, count) {
+      timers[str] = T.getNow();
+      console.log(str + ": started.  Waiting for " + count + " comment elements.");
+
+      T.runCommentCheck(str, count);
+    },
+    runCommentCheck : function(str, count) {
+      var intervalID = setInterval(function() {
+        if(document.getElementsByClassName("comment").length == count + 1) {
+          T.timeEnd(str);
+          clearInterval(intervalID);
+        }
+      }, 20);      
+    },
 		apiUrl : apiRoot,
 		apiUrlSlash : apiRoot + "/"
 	};
 
-	//Intended for use only in the browser or, if you really wanted to for some reason, CommonJS
-	if(typeof module === "undefined") {
-		window.T = exports;
-	}
-	else {
-		module.exports = exports;
-	}
+	//Intended for use only in the browser
+	window.T = exports;
+  T.getNow();
+	
 })();

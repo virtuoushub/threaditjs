@@ -9,36 +9,37 @@ var template = (function () {
 }());
 
 function renderMainFragment ( root, component, target ) {
+	var div = document.createElement( 'div' );
+	div.className = "comment";
+	
 	var p = document.createElement( 'p' );
 	
 	var text = document.createTextNode( root.comment.text );
 	p.appendChild( text );
 	
-	target.appendChild( p )
+	div.appendChild( p )
 	
-	var text1 = document.createTextNode( "\n\n" );
-	target.appendChild( text1 );
+	div.appendChild( document.createTextNode( "\n\n\t" ) );
 	
-	var div = document.createElement( 'div' );
-	div.className = "reply";
+	var div1 = document.createElement( 'div' );
+	div1.className = "reply";
 	
 	var a = document.createElement( 'a' );
 	a.href = "javascript:void(0)";
 	
 	a.appendChild( document.createTextNode( "Reply" ) );
 	
-	div.appendChild( a )
+	div1.appendChild( a )
 	
-	target.appendChild( div )
+	div.appendChild( div1 )
 	
-	var text3 = document.createTextNode( "\n\n" );
-	target.appendChild( text3 );
+	div.appendChild( document.createTextNode( "\n\n\t" ) );
 	
-	var div1 = document.createElement( 'div' );
-	div1.className = "children";
+	var div2 = document.createElement( 'div' );
+	div2.className = "children";
 	
 	var eachBlock_0_anchor = document.createComment( "#each comment.children" );
-	div1.appendChild( eachBlock_0_anchor );
+	div2.appendChild( eachBlock_0_anchor );
 	
 	var eachBlock_0_value = root.comment.children;
 	var eachBlock_0_fragment = document.createDocumentFragment();
@@ -50,7 +51,9 @@ function renderMainFragment ( root, component, target ) {
 	
 	eachBlock_0_anchor.parentNode.insertBefore( eachBlock_0_fragment, eachBlock_0_anchor );
 	
-	target.appendChild( div1 )
+	div.appendChild( div2 )
+	
+	target.appendChild( div )
 
 	return {
 		update: function ( changed, root ) {
@@ -75,17 +78,15 @@ function renderMainFragment ( root, component, target ) {
 		},
 
 		teardown: function ( detach ) {
-			if ( detach ) p.parentNode.removeChild( p );
-			
-			if ( detach ) text1.parentNode.removeChild( text1 );
-			
 			if ( detach ) div.parentNode.removeChild( div );
 			
 			
 			
-			if ( detach ) text3.parentNode.removeChild( text3 );
 			
-			if ( detach ) div1.parentNode.removeChild( div1 );
+			
+			
+			
+			
 			
 			for ( var i = 0; i < eachBlock_0_iterations.length; i += 1 ) {
 				eachBlock_0_iterations[i].teardown( false );

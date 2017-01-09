@@ -119,16 +119,6 @@ commentServices.factory("Home", ["$resource",
 	}
 ]);
 
-var intervalID;
-var monitorDOM = function(count) {
-	intervalID = setInterval(function() {
-		if(document.querySelectorAll(".comment").length==count+1) {
-			clearInterval(intervalID);
-			T.timeEnd("Thread render");
-		}
-	}, 50);
-};
-
 commentServices.factory("Comment", ["$resource",
 	function($resource) {
 		return $resource(T.apiUrl + "/comments/:id",
@@ -139,8 +129,7 @@ commentServices.factory("Comment", ["$resource",
 					transformResponse : function(response) {
 						comments = T.transformResponse(angular.fromJson(response));
 
-						T.time("Thread render");
-						monitorDOM(comments.root.comment_count);
+						T.timeComments("Thread render", comments.root.comment_count);
 						
 						//Makes the root node look more like a 'children' array
 						comments.root = [comments.root];

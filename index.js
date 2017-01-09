@@ -39,6 +39,28 @@ apps.forEach(function(str) {
 	app.use(vhost(str + "." + homeString, staticHandler));
 });
 
+
+var perfDir;
+
+apps.forEach(function(str) {
+	if(fs.existsSync("./examples/" + str + "/perf/")) {
+		perfDir = __dirname + "/examples/" + str + "/perf";
+	}
+	else {
+		perfDir = __dirname + "/examples/" + str;
+	}
+	staticHandler = express();
+	staticHandler.use(express.static(perfDir));
+	staticHandler.get("/*", function(req, res) {
+		res.sendFile(perfDir + "/index.html");
+	});
+
+	app.use(vhost(str + ".perf." + homeString, staticHandler));
+
+});
+
+
+
 //Serve the main ThreaditJS.com site
 app.use(express.static(__dirname + "/site"));
 
