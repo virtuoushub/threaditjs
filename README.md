@@ -66,7 +66,7 @@ You should include http://threaditjs.com/shared.css.  You should also have a col
 
 I liked having a different color favicon per implementation, too.  The favicon.xcf contains the image I used to generate the favicons for the current implementations.  
 
-### Niceties checklist.
+### Niceties checklist
 
 In addition to showing the threads, showing comment trees, allowing the user to create threads and comments, I'll be looking to see how your solution accomplishes or doesn't accomplish the following:
 
